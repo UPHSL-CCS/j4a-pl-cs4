@@ -8,3 +8,5 @@ def average_calculator():
     print(f"\n────୨ৎ────\nYour average is {total}! Goodjob ദ്ദി(˵ •̀ ᴗ - ˵ ) ✧")
 
 average_calculator()
+
+# aAWEWG
