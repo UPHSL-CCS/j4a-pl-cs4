@@ -9,4 +9,4 @@ def average_calculator():
 
 average_calculator()
 
-# aAWEWG
+# Angela Cabanes
