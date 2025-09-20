@@ -5,8 +5,9 @@ def average_calculator():
     science = int(input("Science: "))
 
     total = english + math + science / 3
+    # it should be (english + math + science) / 3
+    # the logic is not correct
+    
     print(f"\n────୨ৎ────\nYour average is {total}! Goodjob ദ്ദി(˵ •̀ ᴗ - ˵ ) ✧")
 
 average_calculator()
-
-# Angela Cabanes
