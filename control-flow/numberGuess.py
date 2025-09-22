@@ -11,14 +11,15 @@ while guess!= uwu:
         guess = int(input("My guess is number "))
         count += 1
 
-        if guess < uwu:
+        if guess < 1 or guess > 10:
+            print("Please enter 1 to 10 ONLY!! ( ｡ •̀ ᴖ •́ ｡)")
+        elif guess < uwu:
             print("Oops, too low! (⸝⸝๑﹏๑⸝⸝)")
         elif guess > uwu:
             print("Woah, too high! ( ◡̀_◡́)ᕤ")
         elif guess == uwu:
             print(f"Congratulations! You guessed it right! ♡〜٩( ˃▿˂ )۶〜♡\nIt took you {count} time/s!")
-        elif guess > 10 | guess <= 0:
-            print("Please enter 1 to 10 ONLY!! ( ｡ •̀ ᴖ •́ ｡)")
+        
 
     except ValueError:
         print("Please enter digits 1 to 10 ONLY!! ( ｡ •̀ ᴖ •́ ｡)")
