@@ -18,7 +18,7 @@ while guess!= uwu:
         elif guess > uwu:
             print("Woah, too high! ( ◡̀_◡́)ᕤ")
         elif guess == uwu:
-            print(f"Congratulations! You guessed it right! ♡〜٩( ˃▿˂ )۶〜♡\nIt took you {count} time/s! ⟢")
+            print(f"\n‧₊ ᵎᵎ Congratulations! 🍒 ⋅ ˚✮\nYou guessed it right! It only took you {count} time/s! ♡〜٩( ˃▿˂ )۶〜♡")
         
 
     except ValueError:
