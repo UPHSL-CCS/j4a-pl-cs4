@@ -44,11 +44,11 @@ The tools I used to complete this exercise are VS Code, Git, GitHub, Google, and
 ---
 
 ### Adam (JavaScript/C++)  
-* What concept was most challenging in the activity?
+* *What concept was most challenging in the activity?*
 
 Despite the main challenge for me is understanding the new programming languages that I'm not familiarize with, the other challenging aspect within this activity is utilizing what is a token for each new keywords, literals, and string within the C++.
 
-* What tools did you use to complete the exercise?
+* *What tools did you use to complete the exercise?*
 
 I've utilized VS Code, GIt, Github, W3Schools, and Youtube. I utilized vs code for making the code and its compiler. Github was used for uploading our code in the repository. w3 schools for understanding the programming languages, along with youtube
 
@@ -59,7 +59,9 @@ I've utilized VS Code, GIt, Github, W3Schools, and Youtube. I utilized vs code f
 
 My role was to help consolidate our outputs into one repository and prepare the README. The challenge for me was making sure all commits from each member were properly pushed and documented, since part of the grading involves Git activity and commit history. I also had to make sure the README connects to the code snippets without repeating them.  
 
-
+* *What tools did you use to complete the exercise?* 
+  
+I completed the exercise by using GitHub to access and manage the code. I also utilized a Markdown cheat sheet to correctly format the text and layout of the README.md file, ensuring it was easy to read and well-organized
 
 ## 👥 Group Members
 - Angela Cabanes – Python snippets & reflection  
