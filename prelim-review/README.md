@@ -18,13 +18,12 @@ Each member contributed either code or reflection to complete the activity, foll
 
 | Concept                 | Python (Angela) | JavaScript/C++ (Adam) |
 |--------------------------|-----------------|-------------------|
-| Syntax vs Semantic Error | - [X]            | [x]                |
-| Tokens                   | - [X]            | [x]                |
-| Variable Scope           | - [X]            | [x]                |
-| Strong vs Weak Typing    | - [X] (strong)   | [x] (weak)         |
+| Syntax vs Semantic Error | ✔               | ✔                |
+| Tokens                   | ✔               | ✔                |
+| Variable Scope           | ✔               | ✔                |
+| Strong vs Weak Typing    | ✔ (strong)      | ✔ (weak)         |
 
 All snippets can be found inside the `/prelim-review/` folder.
-
 
 ---
 
