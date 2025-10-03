@@ -29,16 +29,18 @@ All code snippets can be found inside the `/control-flow/` folder.
 
 ## ✨ Reflections
 
-### [Angela] ([Language 1])
+### Angela (Python)
 
 * *What concept was most challenging in the activity?*
 
+The hardest part for me was making sure the program works even when the user types something wrong. I had to learn how to use try-except so the program doesn’t crash. It was also a bit tricky to make the loop keep going until the user guessed the right number.
 
 * *Enumerate the differences in how each language handles control flow.*
 
+In Python, we use spaces (indentation) to show what is inside if, elif, else, and loops. The program runs step by step following the conditions. Loops like while repeat until the condition is false. Python also lets us catch errors with try-except, which helps control the flow when users give wrong input.
 
 * *What tools did you use to complete the exercise?*
-
+I used VS Code to write the code and ran it in the terminal. I also looked online for examples on try-except and Python loops.
 ---
 
 ### [Adam] ([Language 2])
