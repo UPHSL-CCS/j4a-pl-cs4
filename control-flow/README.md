@@ -18,10 +18,10 @@ Each member contributed code or a reflection to meet the activity requirements, 
 
 | Concept | [Language 1, e.g., Python] | [Language 2, e.g., Java] |
 |:--------------------------|:------------------------------|:---------------------------|
-| `if-else` Statement | ✔ (by [Member Name]) | ✔ (by [Member Name]) |
-| `for` Loop | ✔ (by [Member Name]) | ✔ (by [Member Name]) |
-| `while` Loop | ✔ (by [Member Name]) | ✔ (by [Member Name]) |
-| Arithmetic & Logical Expr. | ✔ (by [Member Name]) | ✔ (by [Member Name]) |
+| `if-else` Statement | ✔  | ✔  |
+| `for` Loop | ✔ | ✔  |
+| `while` Loop | ✔  | ✔  |
+| Arithmetic & Logical Expr. | ✔  | ✔  |
 
 All code snippets can be found inside the `/control-flow/` folder.
 
@@ -43,20 +43,24 @@ In Python, we use spaces (indentation) to show what is inside if, elif, else, an
 I used VS Code to write the code and ran it in the terminal. I also looked online for examples on try-except and Python loops.
 ---
 
-### [Adam] ([Language 2])
+### Adam (C++)
 
 
 * *What concept was most challenging in the activity?*
 
+  The hardest part in this activity was understanding c++ random number generator we picked, to the point of using ai to answer and modify my code. Tho if-else and while are familiar to since it's somewhat the same logic as python
+
 
 * *Enumerate the differences in how each language handles control flow.*
 
+In c++, it dictates the order in which statements in a program are executed, enabling decision-making, repetition of tasks, and handling of different program paths. If follows a specified condition is true, else-if checks the 1st condition is false and the 2nd is true, and else if all the conditions are false. While also checks a block of code if the condition is true
 
 * *What tools did you use to complete the exercise?*
+  The tools I used is gemini, w3schools, and vscode to do this work
 
 ---
 
-### [Mickz] ([READ ME & Git Consolidation])
+### Mickz ([READ ME & Git Consolidation])
 
 
 * *What concept was most challenging in the activity?*
@@ -69,6 +73,6 @@ I used VS Code to write the code and ran it in the terminal. I also looked onlin
 
 
 ## 👥 Group Members
-- Angela Cabanes – Python snippets & reflection
-- Kelvin Adam Aninang – [Language 2] snippets & reflection
+- Angela Cabanes – [Python] snippets & reflection
+- Kelvin Adam Aninang – [c++] snippets & reflection
 - Michaela Jornales – README consolidation & Git commits
