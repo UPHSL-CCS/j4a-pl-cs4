@@ -69,6 +69,6 @@ I used VS Code to write the code and ran it in the terminal. I also looked onlin
 
 
 ## 👥 Group Members
-- [Angela Cabanes] – [Language 1] snippets & reflection
-- [Kelvin Adam Aninang] – [Language 2] snippets & reflection
-- [Michaela Jornales] – README consolidation & Git commits
+- Angela Cabanes – Python snippets & reflection
+- Kelvin Adam Aninang – [Language 2] snippets & reflection
+- Michaela Jornales – README consolidation & Git commits
