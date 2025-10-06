@@ -40,7 +40,7 @@ Another challenge was using Git since I’m still new. I had to learn commands l
 
 The tools I used to complete this exercise are VS Code, Git, GitHub, Google, and Gemini. I used the GitHub browser to double-check if my files were properly uploaded. Whenever I encountered problems, I used Google and Gemini to quickly find specific solutions, especially when I made mistakes with Git commands. I used VS code to run the python program and to execute my Git commands.
 
----
+--------
 
 ### Adam (JavaScript/C++)  
 * *What concept was most challenging in the activity?*
