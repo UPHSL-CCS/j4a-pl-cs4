@@ -19,6 +19,12 @@ def wordPlay():
         else:
             print(f"• '{text}' is not a palindrome because it changes when reversed.")
 
+        # Isogram
+        if isIsogram(text):
+            print(f"• '{text}' is an isogram because all its letters are unique.")
+        else:
+            print(f"• '{text}' is not an isogram because it contains repeated letters.")
+
 print("———————————————————————————♡———————————————————————————\n꒰  ⊹  ˚ . [ Word Play Subprogram ] !  ⁺  𓈒 ꒱\n-this program checks if the word you entered is either an isogram, palindrome, or tautonym.\nPress Enter without typing anything to exit.\n———————————————————————————♡———————————————————————————")
 
 wordPlay()
