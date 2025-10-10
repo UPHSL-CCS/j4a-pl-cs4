@@ -25,6 +25,12 @@ def wordPlay():
         else:
             print(f"• '{text}' is not an isogram because it contains repeated letters.")
 
+        # Tautonym
+        if isTautonym(text):
+            print(f"• '{text}' is a tautonym because it consists of two identical parts.")
+        else:
+            print(f"• '{text}' is not a tautonym because its halves are not the same.")    
+
 print("———————————————————————————♡———————————————————————————\n꒰  ⊹  ˚ . [ Word Play Subprogram ] !  ⁺  𓈒 ꒱\n-this program checks if the word you entered is either an isogram, palindrome, or tautonym.\nPress Enter without typing anything to exit.\n———————————————————————————♡———————————————————————————")
 
 wordPlay()
