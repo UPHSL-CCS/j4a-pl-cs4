@@ -43,7 +43,7 @@ int main(){
                     break;
             }
         } else if (choice == 5){
-            cout << "Goodbye" << endl;
+            cout << "Goodbye, Wah" << endl;
         } else{
             cout << "Invalid number. Try a different number" << endl;
         }
