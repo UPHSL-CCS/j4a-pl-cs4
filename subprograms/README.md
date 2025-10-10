@@ -45,12 +45,13 @@ Modular code is easier to maintain and reuse because each part of the program wo
 ### Adam (C++)
 
 * *Explanation of modularity and abstraction.*
-
+To what I have researched, modularity is a process of seperating complex blocks of code to a more reusable and maintanable state for the program to be used while abstraction is a technique of hiding complex codes and only features to be shown and used in the program
 
 * *Why modular code is easier to maintain and reuse.*
+  The reason is beucase complex blocks of code have become seperated and much more easier to see and understand the components of each code. In my view, this is basically dissecting the human body to see how the body ticks and what parts can we modify or add. It's like how a mad scientist created frankenstein. He simply seperated each part of the body (code) and either modify and add new parts to improve the main human body (main program)
 ---
 
-### Mickz (README & Git Consolidation)
+### Michaela (README)
 
 * *Explanation of modularity and abstraction.*
 
@@ -65,4 +66,5 @@ We confirm that all functions were committed **incrementally** to showcase the d
 - Angela Cabanes – **Python** snippets & reflection
 - Kelvin Adam Aninang – **C++** snippets & reflection
 - Michaela Jornales – 
+
 
