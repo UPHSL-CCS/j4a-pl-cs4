@@ -9,7 +9,7 @@ int main(){
 
     cout << "Cookielator" << endl;
 
-    do{
+    while (choice != 5){}
         cout << "1. Addition +" << endl;
         cout << "2. Subtraction -" << endl;
         cout << "3. Multiplication *" << endl;
@@ -47,7 +47,7 @@ int main(){
         } else{
             cout << "Invalid number. Try a different number" << endl;
         }
-    } while (choice != 5);
+    }
 
     return 0;
 
