@@ -34,7 +34,7 @@ All subprograms can be found inside the mandatory **`/subprograms/`** folder.
 
 * *Explanation of modularity and abstraction.*
 
-Based from my understqanding in this hands on activity, modularity is breaking down the program into smaller parts so it is easier to work on. Basically each module has specific part like what I did in my code. Inside the **`/modules/`** folder, I have separate .py files which are palindrome.py, isogram.py, and tautonym.py, these files have different tasks which is what modularity is all about. While on the other hand, abstraction is hiding the complicated details and only showing the important part. So for example, in my code I called the function isPalindrome(text) instead of having the whole code inside the main.py. This basically makes my code simple and less confusing.  
+Based from my understanding in this hands on activity, modularity is breaking down the program into smaller parts so it is easier to work on. Basically each module has specific part like what I did in my code. Inside the **`/modules/`** folder, I have separate .py files which are palindrome.py, isogram.py, and tautonym.py, these files have different tasks which is what modularity is all about. While on the other hand, abstraction is hiding the complicated details and only showing the important part. So for example, in my code I called the function isPalindrome(text) instead of having the whole code inside the main.py. This basically makes my code simple and less confusing.  
 
 * *Why modular code is easier to maintain and reuse.*
 
@@ -65,3 +65,4 @@ We confirm that all functions were committed **incrementally** to showcase the d
 - Angela Cabanes – **Python** snippets & reflection
 - Kelvin Adam Aninang – **C++** snippets & reflection
 - Michaela Jornales – 
+
