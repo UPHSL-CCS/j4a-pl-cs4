@@ -3,8 +3,8 @@
 
 // Function declarations for the 4 operators
 double add(double a, double b);
-double subtract(double a, double b);
-double multiply(double a, double b);
-double divide(double a, double b);
+double sub(double a, double b);
+double mul(double a, double b);
+double div(double a, double b);
 
 #endif // Cookielator_h
