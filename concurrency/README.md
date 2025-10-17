@@ -18,10 +18,10 @@ The code is located in the `/concurrency/` folder. Each member contributed code 
 ### Angela (Python)
 
 * **Explanation of the concurrency model used.**
-[Leave blank for Angela's answer]
+This program uses Python’s threading model to make two tasks run at the same time. One thread is in charge of the timer countdown, while the main thread waits for the player to press ENTER to catch the fish. Both tasks happen together, which means the timer continues even while the program waits for user input. This shows how concurrency works by allowing different parts of a program to run in parallel without stopping each other.
 
 * **Challenges faced when implementing concurrency.**
-[Leave blank for Angela's answer]
+At first, I found it hard to understand concurrency because I rarely use threads in my programs. I had to learn how to make two things happen at the same time and still work correctly. I got the idea for my project from Animal Crossing’s fishing game, where you only have a few seconds to catch a fish, so I used that concept here. I also found it a bit challenging to do Git merges at first, but I’m slowly getting used to it and learning along the way.
 
 ### Adam (C++)
 
