@@ -1,24 +1,41 @@
 #include <iostream>
 #include <thread>
-#include <mutex> // For std::mutex and std::lock_guard
+#include <mutex>
+#include <condition_variable> // Include condition_variable for synchronization
 using namespace std;
 
 mutex cookie_mutex;
+condition_variable cv;
+
+bool TurnUp = true;
 
 void task1() { // Prints out odd numbers
 
-    lock_guard<mutex> guard(cookie_mutex); // Lock the mutex for this scope
-    for (int i = 0; i < 10; i++) {
-        cout << "Tako 1 - Count: WAH " << i * 2 + 1 << endl;
+    for (int i = 0; i <= 10; i++) {
+        unique_lock<mutex> lock(cookie_mutex); // Lock the mutex for this scope
+
+        cv.wait(lock, [] { return TurnUp; }); // Wait until it's this task's turn
+
+        cout << "Tako 1 - Count: " << i * 2 + 1 << endl;
+
+        TurnUp = false; // Switch turn to task2
+        lock.unlock();
+        cv.notify_one(); // Notify task2
     }
 }
 
 void task2() { // Prints out even numbers
 
-    lock_guard<mutex> guard(cookie_mutex); // Lock the mutex for this scope
-    for (int i = 0; i < 10; i++) {
-        cout << "Tako 2 - Count: WAH " << i * 2 << endl;
+    for (int i = 1; i <= 10; i++) {
+        unique_lock<mutex> lock(cookie_mutex); // Lock the mutex for this scope
 
+        cv.wait(lock, [] { return !TurnUp; }); // Wait until it's this task's turn
+
+        cout << "Tako 2 - Count: " << i * 2 << endl;
+
+        TurnUp = true; // Switch turn to task1
+        lock.unlock();
+        cv.notify_one(); // Notify task1
     }
 }
 
