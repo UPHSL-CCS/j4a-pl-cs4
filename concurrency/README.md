@@ -29,7 +29,7 @@ At first, I found it hard to understand concurrency because I rarely use threads
 For C++, the concurrency model is used through std::thread. The main function starts and would start to call two threads under each function. The first function will print out the odd numbers while the second prints out even the even number. When both task are finished, they will be joined in the main function to be printed. This shows of two task in parallel combined to count from 1-21
 
 * **Challenges faced when implementing concurrency.**
-[Leave blank for Adam's answer]
+When testing out concurrency, I had a hard time for the result to look organize since the result is fusing one output to another , making it look like a mess. Another challenge I observed is that I wanted the results from both task to interleave each other, but only resulted to either the 1st task would always be the first to print out or they're all jumbled randomly
 
 ### Michaela (Documentation & Git)
 
