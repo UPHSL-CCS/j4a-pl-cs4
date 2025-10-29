@@ -40,6 +40,11 @@ class PokemonGame:
             self.got_away.append(self.current_pokemon["name"])
         self.lives -= 1
 
+    def get_hint(self): # Provides a hint for the current Pokémon.
+        if self.current_pokemon:
+            return self.current_pokemon["hint"]
+        return "No hint available."
+
     def get_score(self): # Returns the current score and game statistics.
         return {
             "score": len(self.caught_pokemon),
