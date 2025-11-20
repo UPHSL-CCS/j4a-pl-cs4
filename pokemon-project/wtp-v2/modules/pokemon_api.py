@@ -8,6 +8,9 @@ from io import BytesIO  # Used to treat raw image data (in bytes) like a file
 BASE_URL = "https://pokeapi.co/api/v2/pokemon/"
 # We'll only pick Pokémon from the original 151 (Generation 1)
 MAX_POKEMON_ID = 151
+# --------------------------------------------------------------------------
+# NOTE: The variables above are now at the module level for external access.
+# --------------------------------------------------------------------------
 
 def _create_silhouette(image_data):
     """Takes raw image data and turns it into a dark silhouette."""

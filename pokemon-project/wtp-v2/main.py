@@ -4,24 +4,32 @@
 # Threading - para makapag-load ng API data nang hindi nagha-hang yung app
 # Custom modules - logic (rules ng game) at API fetching
 import tkinter as tk
-from tkinter import ttk, messagebox
+# UPDATED IMPORT: replaced scrolledtext with scrollbar, canvas, and frame
+from tkinter import ttk, messagebox, Scrollbar, Canvas 
 from PIL import ImageTk, Image
 import threading
 from modules.game_logic import PokemonGame
 from modules.pokemon_api import get_random_pokemon
+# NEW IMPORT for Catalogue
+from modules.catalogue_viewer import fetch_catalogue_data
+import requests
+from io import BytesIO
 
 
 # === MAIN APP WINDOW ===
 class PokemonApp(tk.Tk):
+# ... (Keep PokemonApp class unchanged) ...
     def __init__(self):
         # super() is for parent class (tk.Tk) para ma-inherit yung window features
         super().__init__()
         self.title("Who's That Pokémon?")
-        self.geometry("400x550")
+        self.geometry("430x550") # Keep the fixed window size
 
         # self is mismong instance ng class (PokemonApp)
         # parang sinasabi natin: "itong specific window na to"
         self.game = PokemonGame()  # game logic instance galing sa ibang module
+        self.catalogue_data = None # Store catalogue data once fetched
+        self.catalogue_photo_refs = [] # NEW: Crucial to prevent garbage collection of images
 
         # Timer variables para sa sabay-sabay na processes (concurrency)
         self.timer_id = None
@@ -34,23 +42,27 @@ class PokemonApp(tk.Tk):
 
         # Dictionary ng screens (para madali magpalit)
         self.frames = {}
-        for F in (DifficultyScreen, GameScreen, GameOverScreen):
+        # Changed the first screen to StartMenuScreen
+        for F in (StartMenuScreen, DifficultyScreen, GameScreen, GameOverScreen, CatalogueScreen):
             # Gumagawa ng instance ng bawat screen
             frame = F(self.container, self)
             self.frames[F] = frame
             frame.grid(row=0, column=0, sticky="nsew")
 
         # Unang screen na lalabas
-        self.show_frame(DifficultyScreen)
-
+        self.show_frame(StartMenuScreen)
 
     # === Function para mag-switch ng screen ===
     def show_frame(self, frame_class):
         frame = self.frames[frame_class]
         frame.tkraise()  # parang “bring to front”
 
+    # === START GAME FLOW ===
+    # Start button now triggers the Difficulty Screen
+    def show_difficulty_select(self):
+        self.show_frame(DifficultyScreen)
 
-    # === START GAME ===
+    # Starts the actual game round
     def start_game(self, difficulty):
         # i-setup yung rules ng game (difficulty, timer, lives)
         self.game.start_game(difficulty)
@@ -59,6 +71,20 @@ class PokemonApp(tk.Tk):
         # load ng first Pokémon
         self.frames[GameScreen].start_first_round()
 
+    # === CATALOGUE FLOW ===
+    def open_catalogue(self):
+        # Pass the data to the CatalogueScreen if it's already loaded
+        self.frames[CatalogueScreen].load_catalogue(self.catalogue_data)
+        self.show_frame(CatalogueScreen)
+
+    def set_catalogue_data(self, data):
+        self.catalogue_data = data
+        # Immediately open the catalogue once the data is ready
+        self.open_catalogue()
+        
+    def handle_catalogue_error(self, message):
+        messagebox.showerror("Catalogue Error", message)
+        self.show_frame(StartMenuScreen) # Return to start screen
 
     # === END GAME ===
     def end_game(self):
@@ -68,11 +94,9 @@ class PokemonApp(tk.Tk):
         self.frames[GameOverScreen].display_results()
         self.show_frame(GameOverScreen)
 
-
     # === RESTART GAME ===
     def restart_game(self):
         self.show_frame(DifficultyScreen)
-
 
     # === TIMER SYSTEM ===
     def start_timer(self):
@@ -107,8 +131,6 @@ class PokemonApp(tk.Tk):
 
     def handle_time_out(self):
         # kapag naubusan ng oras, move to next Pokémon
-        # We replace the disruptive messagebox with the in-app display logic
-        # messagebox.showwarning("Time's Up!", f"It was {self.game.current_pokemon['name']}!") 
         
         self.frames[GameScreen].display_result(
             "Time's Up!", # The message to display
@@ -120,34 +142,71 @@ class PokemonApp(tk.Tk):
         # Game logic handles the life deduction and adding to got_away list
         self.game.handle_timeout()
         
-        # Check for game end after the timeout is handled
-        if self.game.lives == 0:
-            self.end_game()
+        # Check for game end after the timeout is handled (now in _continue_after_result)
+        pass 
+
+
+# === NEW SCREEN 1: START MENU (Replaces old DifficultyScreen as 1st screen) ===
+class StartMenuScreen(ttk.Frame):
+# ... (Keep StartMenuScreen class unchanged) ...
+    def __init__(self, parent, controller):
+        super().__init__(parent, padding=20)
+        self.controller = controller
+
+        ttk.Label(self, text="Who's That Pokémon?", font=("Arial", 24, "bold")).pack(pady=20)
+        
+        # 1. Start Button: Leads to Difficulty Selection
+        ttk.Button(self, text="Start Game", command=controller.show_difficulty_select).pack(fill="x", ipady=15, pady=20)
+        
+        # 2. Catalogue Button: Leads to Catalogue Screen
+        self.catalogue_button = ttk.Button(self, text="View Catalogue", command=self.on_view_catalogue)
+        self.catalogue_button.pack(fill="x", ipady=15, pady=5)
+        
+    def on_view_catalogue(self):
+        if self.controller.catalogue_data:
+            # If data is already loaded, go straight to the screen
+            self.controller.open_catalogue()
         else:
-            # Load the next one after the display time in display_result
-            # The next line is now handled by the delay in display_result
-            pass 
+            # If data is not loaded, start the loading process
+            self.catalogue_button.config(text="Loading Catalogue...", state="disabled")
+            # Use the concurrent module to fetch data
+            fetch_catalogue_data(
+                callback=lambda data: self.controller.after(0, self.on_catalogue_loaded_success, data),
+                error_callback=lambda msg: self.controller.after(0, self.on_catalogue_loaded_error, msg)
+            )
+            
+    def on_catalogue_loaded_success(self, data):
+        self.controller.set_catalogue_data(data)
+        self.catalogue_button.config(text="View Catalogue", state="normal") # Reset button
+        
+    def on_catalogue_loaded_error(self, message):
+        self.catalogue_button.config(text="View Catalogue", state="normal") # Reset button
+        self.controller.handle_catalogue_error(message)
 
 
-# === SCREEN 1: DIFFICULTY SELECTION ===
+# === SCREEN 2: DIFFICULTY SELECTION (Now triggered from Start Menu) ===
 class DifficultyScreen(ttk.Frame):
+# ... (Keep DifficultyScreen class unchanged) ...
     def __init__(self, parent, controller):
         # super() → tawag sa parent class (ttk.Frame)
         # ginagawa ito para ma-inherit yung mga UI methods ng Frame
         super().__init__(parent, padding=20)
         self.controller = controller  # access sa main app (PokemonApp)
 
-        ttk.Label(self, text="Who's That Pokémon?", font=("Arial", 24, "bold")).pack(pady=20)
-        ttk.Label(self, text="Select a difficulty:", font=("Arial", 16)).pack(pady=10)
+        ttk.Label(self, text="Select a difficulty:", font=("Arial", 16)).pack(pady=30)
 
         # bawat button magtatawag ng start_game() na nasa controller (PokemonApp)
         ttk.Button(self, text="Easy (2:00)", command=lambda: controller.start_game("Easy")).pack(fill="x", ipady=10, pady=5)
         ttk.Button(self, text="Medium (1:00)", command=lambda: controller.start_game("Medium")).pack(fill="x", ipady=10, pady=5)
         ttk.Button(self, text="Hard (0:30)", command=lambda: controller.start_game("Hard")).pack(fill="x", ipady=10, pady=5)
+        
+        ttk.Separator(self, orient='horizontal').pack(fill='x', pady=20)
+        ttk.Button(self, text="Back to Menu", command=lambda: controller.show_frame(StartMenuScreen)).pack(fill="x", ipady=5, pady=5)
 
 
-# === SCREEN 2: MAIN GAME ===
+# === SCREEN 3: MAIN GAME (Same as before) ===
 class GameScreen(ttk.Frame):
+# ... (Keep GameScreen class unchanged from previous update) ...
     def __init__(self, parent, controller):
         super().__init__(parent, padding=20)
         self.controller = controller  # para ma-access yung game logic at timer
@@ -302,8 +361,9 @@ class GameScreen(ttk.Frame):
             self.controller.end_game()
 
 
-# === SCREEN 3: GAME OVER SCREEN ===
+# === SCREEN 4: GAME OVER SCREEN (Same as before) ===
 class GameOverScreen(ttk.Frame):
+# ... (Keep GameOverScreen class unchanged) ...
     def __init__(self, parent, controller):
         super().__init__(parent, padding=20)
         self.controller = controller
@@ -326,6 +386,96 @@ class GameOverScreen(ttk.Frame):
 
         self.results_label.config(text=f"You Caught:\n{caught}\n\nGot Away:\n{got_away}")
 
+
+# === UPDATED SCREEN 5: CATALOGUE VIEWER (Fixed Layout) ===
+# === UPDATED SCREEN 5: CATALOGUE VIEWER (Optimized Layout) ===
+class CatalogueScreen(ttk.Frame):
+    def __init__(self, parent, controller):
+        # We increase the padding slightly to ensure internal elements have space
+        super().__init__(parent, padding=10) 
+        self.controller = controller
+        
+        ttk.Label(self, text="Pokémon Catalogue (Gen 1)", font=("Arial", 20, "bold")).pack(pady=10)
+        
+        # --- Setup Scrollable Canvas ---
+        # Create a container frame for the canvas and scrollbar
+        # This container will take up the *middle* of the fixed window space.
+        scroll_container = ttk.Frame(self)
+        # Use fill="both" and expand=True so the canvas takes up all space between
+        # the title and the 'Back to Menu' button, fitting within the 400x550 window.
+        scroll_container.pack(fill="both", expand=True, padx=5, pady=5) 
+        
+        canvas = tk.Canvas(scroll_container, borderwidth=0, height=400)
+        scrollbar = ttk.Scrollbar(scroll_container, orient="vertical", command=canvas.yview)
+        
+        # Inner frame to hold the catalogue items
+        self.scrollable_frame = ttk.Frame(canvas)
+
+        # Bind the frame's size changes to update the canvas scroll region
+        self.scrollable_frame.bind(
+            "<Configure>",
+            lambda e: canvas.configure(
+                scrollregion=canvas.bbox("all")
+            )
+        )
+
+        canvas.create_window((0, 0), window=self.scrollable_frame, anchor="nw")
+        canvas.configure(yscrollcommand=scrollbar.set)
+
+        # PACK canvas and scrollbar into the scroll_container
+        canvas.pack(side="left", fill="both", expand=True)
+        scrollbar.pack(side="right", fill="y")
+        
+        # --- End Setup Scrollable Canvas ---
+        
+        # Button to return to the main menu (Packed LAST to ensure it's at the bottom)
+        # The (5, 10) padding gives 5px at the top and 10px at the bottom edge.
+        ttk.Button(self, text="Back to Menu", command=lambda: controller.show_frame(StartMenuScreen)).pack(fill="x", ipady=5, pady=(5, 10))
+        
+    def load_catalogue(self, data):
+        # Clear any existing widgets from the scrollable frame
+        for widget in self.scrollable_frame.winfo_children():
+            widget.destroy()
+        
+        # Clear image references in the controller to prevent memory leak
+        self.controller.catalogue_photo_refs = []
+
+        if not data:
+            ttk.Label(self.scrollable_frame, text="Catalogue data is not available.").pack(pady=20)
+            return
+
+        # Iterate and create a widget for each Pokémon
+        for entry in data:
+            # Container frame for one Pokémon entry (ID, Sprite, Name, Types)
+            entry_frame = ttk.Frame(self.scrollable_frame, padding=5, relief="solid", borderwidth=1)
+            entry_frame.pack(fill="x", padx=5, pady=2)
+            
+            # 1. ID Label
+            id_label = ttk.Label(entry_frame, text=f"#{entry['id']:03d}", font=("Arial", 10, "bold"), width=4)
+            id_label.pack(side="left", padx=5)
+
+            # 2. Sprite Image
+            # Create a Tkinter PhotoImage object from the PIL Image
+            sprite_tk = ImageTk.PhotoImage(entry['sprite_image'])
+            # Store a reference to prevent garbage collection
+            self.controller.catalogue_photo_refs.append(sprite_tk)
+            
+            sprite_label = ttk.Label(entry_frame, image=sprite_tk)
+            sprite_label.image = sprite_tk # Keep a local reference too, just in case
+            sprite_label.pack(side="left", padx=10)
+            
+            # 3. Name Label
+            name_label = ttk.Label(entry_frame, text=entry['name'], font=("Arial", 12), width=15, anchor="w")
+            name_label.pack(side="left", fill="x", expand=True)
+
+            # 4. Types Label
+            types_text = " / ".join(entry['types'])
+            types_label = ttk.Label(entry_frame, text=types_text, font=("Arial", 10), anchor="e")
+            types_label.pack(side="right", padx=10)
+
+        # Force update the scroll region
+        self.scrollable_frame.update_idletasks()
+        self.scrollable_frame.event_generate('<Configure>')
 
 # === START APP ===
 if __name__ == "__main__":
