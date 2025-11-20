@@ -1,0 +1,9 @@
+C:/Users/kelvi/OneDrive/Documents/GitHub/j4a-pl-cs4/build/CMakeFiles/UI.dir
+C:/Users/kelvi/OneDrive/Documents/GitHub/j4a-pl-cs4/build/CMakeFiles/edit_cache.dir
+C:/Users/kelvi/OneDrive/Documents/GitHub/j4a-pl-cs4/build/CMakeFiles/rebuild_cache.dir
+C:/Users/kelvi/OneDrive/Documents/GitHub/j4a-pl-cs4/build/CMakeFiles/list_install_components.dir
+C:/Users/kelvi/OneDrive/Documents/GitHub/j4a-pl-cs4/build/CMakeFiles/install.dir
+C:/Users/kelvi/OneDrive/Documents/GitHub/j4a-pl-cs4/build/CMakeFiles/install/local.dir
+C:/Users/kelvi/OneDrive/Documents/GitHub/j4a-pl-cs4/build/CMakeFiles/install/strip.dir
+C:/Users/kelvi/OneDrive/Documents/GitHub/j4a-pl-cs4/build/CMakeFiles/UI_autogen_timestamp_deps.dir
+C:/Users/kelvi/OneDrive/Documents/GitHub/j4a-pl-cs4/build/CMakeFiles/UI_autogen.dir
