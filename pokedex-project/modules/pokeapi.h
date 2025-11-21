@@ -20,6 +20,8 @@ public:
 
     static std::future<std::vector<Region>> fetchRegions();
 
+    static std::future<std::vector<std::string>> fetchPokemonByRegion(const std::string& regionName);
+
 private:
     // Fixed return type: Returns 'Pokemon' object, not 'string'
     static Pokemon parsePokemonData(const std::string& json); 

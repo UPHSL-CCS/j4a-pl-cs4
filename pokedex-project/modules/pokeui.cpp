@@ -84,7 +84,6 @@ void PokedexUI::setupUI() {
 }
 
 void PokedexUI::loadRegions() {
-    // Async fetch regions
     QFuture<std::vector<Region>> future = QtConcurrent::run([]() -> std::vector<Region> {
         return PokeAPI::fetchRegions().get(); 
     });
@@ -94,24 +93,72 @@ void PokedexUI::loadRegions() {
         regions = watcher->result();
         for (const auto& reg : regions) {
             QListWidget *list = new QListWidget;
-            list->addItem("Select a region tab...");
+            list->addItem("Select this region to load Pokémon...");
             connect(list, &QListWidget::itemClicked, this, &PokedexUI::onPokemonSelected);
             regionTabs->addTab(list, QString::fromStdString(reg.name));
         }
         connect(regionTabs, &QTabWidget::currentChanged, this, &PokedexUI::onRegionTabChanged);
+        
+        // Auto-load first region
+        if (!regions.empty()) {
+            onRegionTabChanged(0);
+        }
+        
         watcher->deleteLater();
     });
     watcher->setFuture(future);
 }
   
 void PokedexUI::onRegionTabChanged(int index) {
-    (void)index; // Suppress unused warning
+    if (index < 0 || index >= (int)regions.size()) return;
+    
+    QListWidget *currentList = qobject_cast<QListWidget*>(regionTabs->widget(index));
+    if (!currentList) return;
+    
+    // Check if already loaded (more than just the placeholder)
+    if (currentList->count() > 1) return;
+    
+    // Clear placeholder
+    currentList->clear();
+    currentList->addItem("Loading...");
+    
+    const std::string& regionName = regions[index].name;
+    
+    // Fetch Pokémon for this region asynchronously
+    QFuture<std::vector<std::string>> future = QtConcurrent::run([regionName]() {
+        return PokeAPI::fetchPokemonByRegion(regionName).get();
+    });
+    
+    QFutureWatcher<std::vector<std::string>> *watcher = new QFutureWatcher<std::vector<std::string>>(this);
+    connect(watcher, &QFutureWatcher<std::vector<std::string>>::finished, this, [this, watcher, currentList, index]() {
+        std::vector<std::string> pokemonNames = watcher->result();
+        
+        currentList->clear();
+        if (pokemonNames.empty()) {
+            currentList->addItem("No Pokémon found for this region");
+        } else {
+            for (const auto& name : pokemonNames) {
+                currentList->addItem(QString::fromStdString(name));
+            }
+        }
+        
+        // Store in regions data
+        if (index >= 0 && index < (int)regions.size()) {
+            regions[index].pokemon_names = pokemonNames;
+        }
+        
+        watcher->deleteLater();
+    });
+    watcher->setFuture(future);
 }
 
 void PokedexUI::onPokemonSelected(QListWidgetItem *item) {
     // Prevent fetching if clicking the placeholder text
-    if(item->text() != "Select a region tab...") {
-        fetchAndDisplay(item->text());
+    QString text = item->text();
+    if(text != "Select a region to load a pokemon..." &&
+       text != "Loading..." &&
+       text != "No Pokémon found for this region") {
+        fetchAndDisplay(text);
     }
 }
 

@@ -179,3 +179,57 @@ std::future<std::vector<Region>> PokeAPI::fetchRegions() {
         return std::vector<Region>{}; // Return empty vector on failure
     });
 }
+
+std::future<std::vector<std::string>> PokeAPI::fetchPokemonByRegion(const std::string& regionName) {
+    return std::async(std::launch::async, [regionName]() {
+        CURL* curl = curl_easy_init();
+        std::string url = "https://pokeapi.co/api/v2/region/" + regionName;
+        std::string response;
+        
+        if (curl) {
+            curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
+            curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
+            curl_easy_setopt(curl, CURLOPT_WRITEDATA, &response);
+            curl_easy_setopt(curl, CURLOPT_USERAGENT, "libcurl-agent/1.0");
+            
+            CURLcode res = curl_easy_perform(curl);
+            curl_easy_cleanup(curl);
+            
+            if (res == CURLE_OK) {
+                json data = json::parse(response);
+                std::vector<std::string> pokemonNames;
+                
+                // Get the pokedexes for this region
+                if (data.contains("pokedexes") && !data["pokedexes"].empty()) {
+                    // Fetch the first pokedex for this region
+                    std::string pokedexUrl = data["pokedexes"][0]["url"].get<std::string>();
+                    
+                    // Fetch pokedex details
+                    CURL* curl2 = curl_easy_init();
+                    std::string pokedexResponse;
+                    
+                    if (curl2) {
+                        curl_easy_setopt(curl2, CURLOPT_URL, pokedexUrl.c_str());
+                        curl_easy_setopt(curl2, CURLOPT_WRITEFUNCTION, WriteCallback);
+                        curl_easy_setopt(curl2, CURLOPT_WRITEDATA, &pokedexResponse);
+                        curl_easy_setopt(curl2, CURLOPT_USERAGENT, "libcurl-agent/1.0");
+                        
+                        CURLcode res2 = curl_easy_perform(curl2);
+                        curl_easy_cleanup(curl2);
+                        
+                        if (res2 == CURLE_OK) {
+                            json pokedexData = json::parse(pokedexResponse);
+                            if (pokedexData.contains("pokemon_entries")) {
+                                for (const auto& entry : pokedexData["pokemon_entries"]) {
+                                    pokemonNames.push_back(entry["pokemon_species"]["name"].get<std::string>());
+                                }
+                            }
+                        }
+                    }
+                }
+                return pokemonNames;
+            }
+        }
+        return std::vector<std::string>{};
+    });
+}
