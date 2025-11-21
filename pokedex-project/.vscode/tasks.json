@@ -10,6 +10,7 @@
                 "-I", "C:/Users/kelvi/vcpkg/installed/x64-mingw-dynamic/include",
                 "-L", "C:/Users/kelvi/vcpkg/installed/x64-mingw-dynamic/lib",
                 "${workspaceFolder}/modules/pokeapi.cpp",
+                "${workspaceFolder}/main.cpp",
                 "-o", "${workspaceFolder}/pokedex.exe",
                 "-lcurl"
             ],
