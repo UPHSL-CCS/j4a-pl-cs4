@@ -1,0 +1,26 @@
+[
+{
+  "directory": "C:/Users/kelvi/OneDrive/Documents/GitHub/j4a-pl-cs4/pokedex-project/build",
+  "command": "C:\\Qt\\Tools\\mingw1310_64\\bin\\g++.exe -DMINGW_HAS_SECURE_API=1 -DQT_CONCURRENT_LIB -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN64 -IC:/Users/kelvi/OneDrive/Documents/GitHub/j4a-pl-cs4/pokedex-project/build/pokedex-project_autogen/include -IC:/Users/kelvi/OneDrive/Documents/GitHub/j4a-pl-cs4/pokedex-project/modules -isystem C:/dev/vcpkg/installed/x64-mingw-dynamic/include -isystem C:/Qt/6.10.1/mingw_64/include/QtCore -isystem C:/Qt/6.10.1/mingw_64/include -isystem C:/Qt/6.10.1/mingw_64/mkspecs/win32-g++ -isystem C:/Qt/6.10.1/mingw_64/include/QtGui -isystem C:/Qt/6.10.1/mingw_64/include/QtWidgets -isystem C:/Qt/6.10.1/mingw_64/include/QtConcurrent -isystem C:/Qt/6.10.1/mingw_64/include/QtNetwork -O3 -DNDEBUG -std=gnu++17 -o CMakeFiles\\pokedex-project.dir\\pokedex-project_autogen\\mocs_compilation.cpp.obj -c C:\\Users\\kelvi\\OneDrive\\Documents\\GitHub\\j4a-pl-cs4\\pokedex-project\\build\\pokedex-project_autogen\\mocs_compilation.cpp",
+  "file": "C:\\Users\\kelvi\\OneDrive\\Documents\\GitHub\\j4a-pl-cs4\\pokedex-project\\build\\pokedex-project_autogen\\mocs_compilation.cpp",
+  "output": "CMakeFiles\\pokedex-project.dir\\pokedex-project_autogen\\mocs_compilation.cpp.obj"
+},
+{
+  "directory": "C:/Users/kelvi/OneDrive/Documents/GitHub/j4a-pl-cs4/pokedex-project/build",
+  "command": "C:\\Qt\\Tools\\mingw1310_64\\bin\\g++.exe -DMINGW_HAS_SECURE_API=1 -DQT_CONCURRENT_LIB -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN64 -IC:/Users/kelvi/OneDrive/Documents/GitHub/j4a-pl-cs4/pokedex-project/build/pokedex-project_autogen/include -IC:/Users/kelvi/OneDrive/Documents/GitHub/j4a-pl-cs4/pokedex-project/modules -isystem C:/dev/vcpkg/installed/x64-mingw-dynamic/include -isystem C:/Qt/6.10.1/mingw_64/include/QtCore -isystem C:/Qt/6.10.1/mingw_64/include -isystem C:/Qt/6.10.1/mingw_64/mkspecs/win32-g++ -isystem C:/Qt/6.10.1/mingw_64/include/QtGui -isystem C:/Qt/6.10.1/mingw_64/include/QtWidgets -isystem C:/Qt/6.10.1/mingw_64/include/QtConcurrent -isystem C:/Qt/6.10.1/mingw_64/include/QtNetwork -O3 -DNDEBUG -std=gnu++17 -o CMakeFiles\\pokedex-project.dir\\main.cpp.obj -c C:\\Users\\kelvi\\OneDrive\\Documents\\GitHub\\j4a-pl-cs4\\pokedex-project\\main.cpp",
+  "file": "C:\\Users\\kelvi\\OneDrive\\Documents\\GitHub\\j4a-pl-cs4\\pokedex-project\\main.cpp",
+  "output": "CMakeFiles\\pokedex-project.dir\\main.cpp.obj"
+},
+{
+  "directory": "C:/Users/kelvi/OneDrive/Documents/GitHub/j4a-pl-cs4/pokedex-project/build",
+  "command": "C:\\Qt\\Tools\\mingw1310_64\\bin\\g++.exe -DMINGW_HAS_SECURE_API=1 -DQT_CONCURRENT_LIB -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN64 -IC:/Users/kelvi/OneDrive/Documents/GitHub/j4a-pl-cs4/pokedex-project/build/pokedex-project_autogen/include -IC:/Users/kelvi/OneDrive/Documents/GitHub/j4a-pl-cs4/pokedex-project/modules -isystem C:/dev/vcpkg/installed/x64-mingw-dynamic/include -isystem C:/Qt/6.10.1/mingw_64/include/QtCore -isystem C:/Qt/6.10.1/mingw_64/include -isystem C:/Qt/6.10.1/mingw_64/mkspecs/win32-g++ -isystem C:/Qt/6.10.1/mingw_64/include/QtGui -isystem C:/Qt/6.10.1/mingw_64/include/QtWidgets -isystem C:/Qt/6.10.1/mingw_64/include/QtConcurrent -isystem C:/Qt/6.10.1/mingw_64/include/QtNetwork -O3 -DNDEBUG -std=gnu++17 -o CMakeFiles\\pokedex-project.dir\\modules\\pokeapi.cpp.obj -c C:\\Users\\kelvi\\OneDrive\\Documents\\GitHub\\j4a-pl-cs4\\pokedex-project\\modules\\pokeapi.cpp",
+  "file": "C:\\Users\\kelvi\\OneDrive\\Documents\\GitHub\\j4a-pl-cs4\\pokedex-project\\modules\\pokeapi.cpp",
+  "output": "CMakeFiles\\pokedex-project.dir\\modules\\pokeapi.cpp.obj"
+},
+{
+  "directory": "C:/Users/kelvi/OneDrive/Documents/GitHub/j4a-pl-cs4/pokedex-project/build",
+  "command": "C:\\Qt\\Tools\\mingw1310_64\\bin\\g++.exe -DMINGW_HAS_SECURE_API=1 -DQT_CONCURRENT_LIB -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN64 -IC:/Users/kelvi/OneDrive/Documents/GitHub/j4a-pl-cs4/pokedex-project/build/pokedex-project_autogen/include -IC:/Users/kelvi/OneDrive/Documents/GitHub/j4a-pl-cs4/pokedex-project/modules -isystem C:/dev/vcpkg/installed/x64-mingw-dynamic/include -isystem C:/Qt/6.10.1/mingw_64/include/QtCore -isystem C:/Qt/6.10.1/mingw_64/include -isystem C:/Qt/6.10.1/mingw_64/mkspecs/win32-g++ -isystem C:/Qt/6.10.1/mingw_64/include/QtGui -isystem C:/Qt/6.10.1/mingw_64/include/QtWidgets -isystem C:/Qt/6.10.1/mingw_64/include/QtConcurrent -isystem C:/Qt/6.10.1/mingw_64/include/QtNetwork -O3 -DNDEBUG -std=gnu++17 -o CMakeFiles\\pokedex-project.dir\\modules\\pokeui.cpp.obj -c C:\\Users\\kelvi\\OneDrive\\Documents\\GitHub\\j4a-pl-cs4\\pokedex-project\\modules\\pokeui.cpp",
+  "file": "C:\\Users\\kelvi\\OneDrive\\Documents\\GitHub\\j4a-pl-cs4\\pokedex-project\\modules\\pokeui.cpp",
+  "output": "CMakeFiles\\pokedex-project.dir\\modules\\pokeui.cpp.obj"
+}
+]

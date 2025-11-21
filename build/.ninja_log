@@ -1,0 +1,8 @@
+# ninja log v6
+10	112	7853731974447467	C:/Users/kelvi/OneDrive/Documents/GitHub/j4a-pl-cs4/build/CMakeFiles/cmake.verify_globs	49cdcac32d041f33
+116	6465	7853732037706795	UI_autogen/timestamp	10d3ec15fb485ffb
+116	6465	7853732037706795	UI_autogen/mocs_compilation.cpp	10d3ec15fb485ffb
+116	6465	7853732037706795	C:/Users/kelvi/OneDrive/Documents/GitHub/j4a-pl-cs4/build/UI_autogen/timestamp	10d3ec15fb485ffb
+116	6465	7853732037706795	C:/Users/kelvi/OneDrive/Documents/GitHub/j4a-pl-cs4/build/UI_autogen/mocs_compilation.cpp	10d3ec15fb485ffb
+6484	10492	7853732039176916	CMakeFiles/UI.dir/UI_autogen/mocs_compilation.cpp.obj	dab7824bbd285bd
+6494	10674	7853732039276919	CMakeFiles/UI.dir/ui.cpp.obj	819846582edad76b
