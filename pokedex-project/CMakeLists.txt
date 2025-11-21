@@ -1,19 +1,22 @@
-# CMakeLists.txt
-cmake_minimum_required(VERSION 3.15)
+cmake_minimum_required(VERSION 3.5)
 project(pokedex-project)
 
-# Find the installed packages
+# 1. Find vcpkg libraries
 find_package(CURL REQUIRED)
-find_package(nlohmann_json CONFIG REQUIRED) # nlohmann_json uses the CONFIG mode
+find_package(nlohmann_json CONFIG REQUIRED)
 
-# Add your executable target (replace main.cpp with your source file)
-add_executable(pokedex-project
-    main.cpp 
-    modules/pokeapi.cpp)
+# 2. Find Qt libraries 
+find_package(Qt6 REQUIRED COMPONENTS Widgets Core Gui)
 
-# Link the libraries to your executable target
+add_executable(pokedex-project 
+    main.cpp
+    modules/pokeapi.cpp
+    # Add other cpp files here if needed
+)
+
+# 3. Link everything together
 target_link_libraries(pokedex-project PRIVATE 
     CURL::libcurl 
     nlohmann_json::nlohmann_json
-    Qt6::Widgets
+    Qt6::Widgets 
 )
