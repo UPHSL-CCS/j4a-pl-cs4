@@ -7,12 +7,13 @@
             "command": "C:/msys64/mingw64/bin/g++.exe",
             "args": [
                 "-std=c++17",
-                "-I", "C:/Users/kelvi/vcpkg/installed/x64-mingw-dynamic/include",
-                "-L", "C:/Users/kelvi/vcpkg/installed/x64-mingw-dynamic/lib",
-                "${workspaceFolder}/modules/pokeapi.cpp",
-                "${workspaceFolder}/main.cpp",
-                "-o", "${workspaceFolder}/pokedex.exe",
-                "-lcurl"
+                "-g",
+                "-I", "C:/dev/vcpkg/installed/x64-windows/include",  // Include path for curl and json
+                "-L", "C:/ev/vcpkg/installed/x64-windows/lib",      // Lib path
+                "-lcurl",  // Link libcurl
+                "main.cpp",  // Your main file
+                "pokeapi.cpp",   // Your API implementation file
+                "-o", "main.exe"
             ],
             "group": {
                 "kind": "build",
