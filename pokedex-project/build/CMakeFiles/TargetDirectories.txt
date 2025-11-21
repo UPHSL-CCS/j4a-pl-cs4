@@ -1,3 +1,5 @@
 C:/Users/kelvi/OneDrive/Documents/GitHub/j4a-pl-cs4/pokedex-project/build/CMakeFiles/pokedex-project.dir
 C:/Users/kelvi/OneDrive/Documents/GitHub/j4a-pl-cs4/pokedex-project/build/CMakeFiles/edit_cache.dir
 C:/Users/kelvi/OneDrive/Documents/GitHub/j4a-pl-cs4/pokedex-project/build/CMakeFiles/rebuild_cache.dir
+C:/Users/kelvi/OneDrive/Documents/GitHub/j4a-pl-cs4/pokedex-project/build/CMakeFiles/pokedex-project_autogen_timestamp_deps.dir
+C:/Users/kelvi/OneDrive/Documents/GitHub/j4a-pl-cs4/pokedex-project/build/CMakeFiles/pokedex-project_autogen.dir

@@ -1,3 +1,13 @@
 # ninja log v6
-1027	16395	7854171951937133	CMakeFiles/pokedex-project.dir/main.cpp.obj	d02d2eaa1500f97
-1086	22057	7854171952517181	CMakeFiles/pokedex-project.dir/modules/pokeapi.cpp.obj	32596e2718792c72
+70	10210	7854297965804482	CMakeFiles/pokedex-project.dir/modules/pokeapi.cpp.obj	32596e2718792c72
+12	11979	7854296786285015	CMakeFiles/pokedex-project.dir/main.cpp.obj	d02d2eaa1500f97
+25	12964	7854296786415039	CMakeFiles/pokedex-project.dir/modules/pokeui.cpp.obj	f9967f2981acd11
+53	2275	7854303694576219	pokedex-project_autogen/timestamp	4120f340736a986b
+53	2275	7854303694576219	pokedex-project_autogen/mocs_compilation.cpp	4120f340736a986b
+53	2275	7854303694576219	C:/Users/kelvi/OneDrive/Documents/GitHub/j4a-pl-cs4/pokedex-project/build/pokedex-project_autogen/timestamp	4120f340736a986b
+53	2275	7854303694576219	C:/Users/kelvi/OneDrive/Documents/GitHub/j4a-pl-cs4/pokedex-project/build/pokedex-project_autogen/mocs_compilation.cpp	4120f340736a986b
+2354	19188	7854303698886543	CMakeFiles/pokedex-project.dir/modules/pokeapi.cpp.obj	d870ab4450775667
+2345	19685	7854303698786550	CMakeFiles/pokedex-project.dir/pokedex-project_autogen/mocs_compilation.cpp.obj	7e784135bbc9db28
+2349	20204	7854303698836537	CMakeFiles/pokedex-project.dir/main.cpp.obj	ecc4568989d50ac8
+2359	21096	7854303698936547	CMakeFiles/pokedex-project.dir/modules/pokeui.cpp.obj	8a7b3aa083b4618e
+21097	30701	7854303886304037	pokedex-project.exe	464222914feb83ab

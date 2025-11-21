@@ -1,5 +1,7 @@
 #include "pokeui.h"
-#include "pokeapi.h"  // Your API header
+#include "pokeapi.h"
+#include "pokedata.h"
+
 #include <QApplication>
 #include <QMessageBox>
 #include <QHeaderView>
@@ -10,6 +12,7 @@
 #include <QFutureWatcher>
 #include <QtConcurrent>
 
+// Constructor
 PokedexUI::PokedexUI(QWidget *parent) : QMainWindow(parent) {
     setupUI();
     setWindowTitle("Pokedex v1.0");
@@ -31,8 +34,7 @@ void PokedexUI::setupUI() {
     // Left side: Regions tabs
     regionTabs = new QTabWidget;
     mainSplitter->addWidget(regionTabs);
-    mainSplitter->setSizes({300, 700});
-
+    
     // Right side: Details
     QWidget *rightWidget = new QWidget;
     QVBoxLayout *rightLayout = new QVBoxLayout(rightWidget);
@@ -78,33 +80,39 @@ void PokedexUI::setupUI() {
     rightLayout->addWidget(statsTable);
 
     mainSplitter->addWidget(rightWidget);
+    mainSplitter->setSizes({300, 700});
 }
 
-  void PokedexUI::loadRegions() {
-      std::future<std::vector<Region>> future = PokeAPI::fetchRegions();  // Change to std::future
-      QFutureWatcher<std::vector<Region>> *watcher = new QFutureWatcher<std::vector<Region>>(this);
-      connect(watcher, &QFutureWatcher<std::vector<Region>>::finished, this, [this, watcher]() {
-          regions = watcher->result();
-          for (const auto& reg : regions) {
-              QListWidget *list = new QListWidget;
-              // Note: Your fetchRegions doesn't populate pokemon_names yet.
-              // For now, add a placeholder or fetch separately.
-              list->addItem("Pokemon list not loaded yet");  // Update when you add pokemon fetching per region
-              connect(list, &QListWidget::itemClicked, this, &PokedexUI::onPokemonSelected);
-              regionTabs->addTab(list, QString::fromStdString(reg.name));
-          }
-          connect(regionTabs, &QTabWidget::currentChanged, this, &PokedexUI::onRegionTabChanged);
-          watcher->deleteLater();
-      });
-      watcher->setFuture(future);  // This works with std::future
-  }
+void PokedexUI::loadRegions() {
+    // Async fetch regions
+    QFuture<std::vector<Region>> future = QtConcurrent::run([]() -> std::vector<Region> {
+        return PokeAPI::fetchRegions().get(); 
+    });
 
+    QFutureWatcher<std::vector<Region>> *watcher = new QFutureWatcher<std::vector<Region>>(this);
+    connect(watcher, &QFutureWatcher<std::vector<Region>>::finished, this, [this, watcher]() {
+        regions = watcher->result();
+        for (const auto& reg : regions) {
+            QListWidget *list = new QListWidget;
+            list->addItem("Select a region tab...");
+            connect(list, &QListWidget::itemClicked, this, &PokedexUI::onPokemonSelected);
+            regionTabs->addTab(list, QString::fromStdString(reg.name));
+        }
+        connect(regionTabs, &QTabWidget::currentChanged, this, &PokedexUI::onRegionTabChanged);
+        watcher->deleteLater();
+    });
+    watcher->setFuture(future);
+}
+  
 void PokedexUI::onRegionTabChanged(int index) {
-    // Optional: Load details for the first Pokemon in the tab
+    (void)index; // Suppress unused warning
 }
 
 void PokedexUI::onPokemonSelected(QListWidgetItem *item) {
-    fetchAndDisplay(item->text());
+    // Prevent fetching if clicking the placeholder text
+    if(item->text() != "Select a region tab...") {
+        fetchAndDisplay(item->text());
+    }
 }
 
 void PokedexUI::onSearchClicked() {
@@ -115,12 +123,17 @@ void PokedexUI::onSearchClicked() {
 }
 
 void PokedexUI::onListClicked() {
-    // Similar to before, but could integrate with tabs
+    // Fetches first 10 pokemon just by iterating IDs
+    for(int i=1; i<=10; i++) {
+        // Note: Ideally this would populate a list, but for now we just display the last one
+        if(i==1) fetchAndDisplay(QString::number(i)); 
+    }
 }
 
 void PokedexUI::fetchAndDisplay(const QString& query) {
-    QFuture<Pokemon> future = QtConcurrent::run([query]() {
-        return PokeAPI::fetchPokemonWithDescription(query.toStdString()).get();
+    std::string qStd = query.toStdString();
+    QFuture<Pokemon> future = QtConcurrent::run([qStd]() {
+        return PokeAPI::fetchPokemonWithDescription(qStd).get();
     });
 
     QFutureWatcher<Pokemon> *watcher = new QFutureWatcher<Pokemon>(this);
@@ -139,11 +152,13 @@ void PokedexUI::fetchAndDisplay(const QString& query) {
 void PokedexUI::displayPokemon(const Pokemon& p) {
     nameLabel->setText("Name: " + QString::fromStdString(p.name));
     idLabel->setText("ID: " + QString::number(p.id));
+    
     QString types;
     for (size_t i = 0; i < p.types.size(); ++i) {
         types += QString::fromStdString(p.types[i]);
         if (i < p.types.size() - 1) types += ", ";
     }
+    
     typesLabel->setText("Types: " + types);
     heightLabel->setText("Height: " + QString::number(p.height / 10.0) + " m");
     weightLabel->setText("Weight: " + QString::number(p.weight / 10.0) + " kg");
@@ -165,10 +180,10 @@ void PokedexUI::displayPokemon(const Pokemon& p) {
     }
 
     // Stats table
-    statsTable->setRowCount(p.stats.size());
-    for (int i = 0; i < p.stats.size(); ++i) {
-        statsTable->setItem(i, 0, new QTableWidgetItem(QString::fromStdString(p.stats[i].name)));
-        statsTable->setItem(i, 1, new QTableWidgetItem(QString::number(p.stats[i].base_stat)));
+    statsTable->setRowCount((int)p.stats.size());
+    for (size_t i = 0; i < p.stats.size(); ++i) {
+        statsTable->setItem((int)i, 0, new QTableWidgetItem(QString::fromStdString(p.stats[i].name)));
+        statsTable->setItem((int)i, 1, new QTableWidgetItem(QString::number(p.stats[i].base_stat)));
     }
 }
 

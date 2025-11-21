@@ -3,28 +3,27 @@
 
 #include <string>
 #include <vector>
-using namespace std;
 
 struct Stat {
-    string name;
+    std::string name;
     int base_stat;
 };
 
 struct Pokemon {
     int id;
-    string name;
-    vector<string> types;
+    std::string name;
+    std::vector<std::string> types;
     int height;
     int weight;
-    vector<Stat> stats;
-    string description;
-    string sprite_url;
+    std::vector<Stat> stats;
+    std::string description;
+    std::string sprite_url;
 };
 
 struct Region {
     int id;
-    string name;
-    vector<std::string> pokemon_names;
+    std::string name;
+    std::vector<std::string> pokemon_names;
 };
 
 #endif

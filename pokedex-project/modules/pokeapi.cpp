@@ -2,7 +2,6 @@
 
 // CRITICAL: These defines must be at the very top to fix the "ambiguous byte" error
 #define WIN32_LEAN_AND_MEAN
-#define NOMINMAX
 
 #include <curl/curl.h>
 #include <nlohmann/json.hpp>
@@ -166,7 +165,7 @@ std::future<std::vector<Region>> PokeAPI::fetchRegions() {
                 
                 for (const auto& reg : data["results"]) {
                     Region r;
-                    r.id = regions.size() + 1;
+                    r.id = (int)regions.size() + 1;
                     r.name = reg["name"].get<std::string>();
                     
                     // NOTE: Fetching details for EVERY region inside this loop 

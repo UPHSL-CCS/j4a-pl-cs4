@@ -1,45 +1,55 @@
-#ifndef pokeui_h
-#define pokeui_h
+#pragma once
 
-#include "pokedata.h"  // Your Pokemon/Region structs
+#include "pokedata.h" 
+#include "pokeapi.h" 
+
 #include <QMainWindow>
 #include <QLabel>
 #include <QLineEdit>
 #include <QPushButton>
 #include <QTableWidget>
-#include <QVBoxLayout>
-#include <QHBoxLayout>
 #include <QTabWidget>
 #include <QListWidget>
 #include <QSplitter>
-#include <QFuture>
 #include <QPixmap>
+#include <QHeaderView>
+#include <QVBoxLayout>
+#include <QHBoxLayout>
+#include <QMessageBox>
+#include <QApplication> 
+#include <QtConcurrent> 
+#include <QtNetwork/QNetworkAccessManager>
+#include <QtNetwork/QNetworkReply>
 
+// FIXED: Renamed class from PokedexWindow to PokedexUI
 class PokedexUI : public QMainWindow {
-    Q_OBJECT
+    Q_OBJECT 
 
 public:
-    PokedexUI(QWidget *parent = nullptr);
+    // Constructor matches your implementation (no apiService arg needed)
+    explicit PokedexUI(QWidget *parent = nullptr);
     ~PokedexUI();
 
 private slots:
     void onSearchClicked();
     void onListClicked();
-    void onRegionTabChanged(int index);
     void onPokemonSelected(QListWidgetItem *item);
-    void displayPokemon(const Pokemon& p);
-    void displayError(const QString& msg);
-    void loadRegions();
+    void onRegionTabChanged(int index);
 
 private:
     void setupUI();
+    void loadRegions();
     void fetchAndDisplay(const QString& query);
+    void displayPokemon(const Pokemon& p);
+    void displayError(const QString& msg);
 
+    // UI Components matching your .cpp
+    QSplitter *mainSplitter;
+    QTabWidget *regionTabs;
     QLineEdit *searchInput;
     QPushButton *searchButton;
     QPushButton *listButton;
-    QTabWidget *regionTabs;
-    QListWidget *pokemonList;
+    
     QLabel *nameLabel;
     QLabel *idLabel;
     QLabel *typesLabel;
@@ -47,9 +57,9 @@ private:
     QLabel *weightLabel;
     QLabel *descriptionLabel;
     QLabel *spriteLabel;
+    
     QTableWidget *statsTable;
-    QSplitter *mainSplitter;
+
+    // Data storage
     std::vector<Region> regions;
 };
-
-#endif
