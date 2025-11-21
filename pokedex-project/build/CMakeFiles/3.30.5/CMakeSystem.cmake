@@ -3,7 +3,7 @@ set(CMAKE_HOST_SYSTEM_NAME "Windows")
 set(CMAKE_HOST_SYSTEM_VERSION "10.0.19042")
 set(CMAKE_HOST_SYSTEM_PROCESSOR "AMD64")
 
-include("C:/dev/vcpkg/scripts/buildsystems/vcpkg.cmake")
+include("C:/Qt/6.10.1/mingw_64/lib/cmake/Qt6/qt.toolchain.cmake")
 
 set(CMAKE_SYSTEM "Windows-10.0.19042")
 set(CMAKE_SYSTEM_NAME "Windows")

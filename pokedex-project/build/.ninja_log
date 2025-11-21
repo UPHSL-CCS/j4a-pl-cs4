@@ -1,7 +1,3 @@
 # ninja log v6
-46	3116	7854037305372813	CMakeFiles/pokedex-project.dir/main.cpp.obj	154d6181fcfd775c
-140	2396	7854055197751612	CMakeFiles/pokedex-project.dir/main.cpp.obj	154d6181fcfd775c
-160	8674	7854055197961652	CMakeFiles/pokedex-project.dir/modules/pokeapi.cpp.obj	24547e582fb074d
-8687	18823	7854055283218472	pokedex-project.exe	3938f63ab420daf3
-75	3126	7854065740821004	CMakeFiles/pokedex-project.dir/main.cpp.obj	154d6181fcfd775c
-3133	10267	7854065771392555	pokedex-project.exe	3938f63ab420daf3
+1027	16395	7854171951937133	CMakeFiles/pokedex-project.dir/main.cpp.obj	d02d2eaa1500f97
+1086	22057	7854171952517181	CMakeFiles/pokedex-project.dir/modules/pokeapi.cpp.obj	32596e2718792c72
