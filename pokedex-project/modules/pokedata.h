@@ -26,4 +26,9 @@ struct Region {
     std::vector<std::string> pokemon_names;
 };
 
+struct RegionWithPokedex {
+    Region region;
+    std::string pokedex_url;
+};
+
 #endif

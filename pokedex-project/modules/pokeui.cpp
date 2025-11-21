@@ -49,9 +49,6 @@ void PokedexUI::setupUI() {
     searchLayout->addWidget(searchButton);
     rightLayout->addLayout(searchLayout);
 
-    listButton = new QPushButton("List First 10 Pokemon");
-    connect(listButton, &QPushButton::clicked, this, &PokedexUI::onListClicked);
-    rightLayout->addWidget(listButton);
 
     // Display section
     nameLabel = new QLabel("Name: ");
@@ -84,19 +81,27 @@ void PokedexUI::setupUI() {
 }
 
 void PokedexUI::loadRegions() {
-    QFuture<std::vector<Region>> future = QtConcurrent::run([]() -> std::vector<Region> {
-        return PokeAPI::fetchRegions().get(); 
+    QFuture<std::vector<RegionWithPokedex>> future = QtConcurrent::run([]() {
+        return PokeAPI::fetchRegionsWithPokedexUrls().get(); 
     });
 
-    QFutureWatcher<std::vector<Region>> *watcher = new QFutureWatcher<std::vector<Region>>(this);
-    connect(watcher, &QFutureWatcher<std::vector<Region>>::finished, this, [this, watcher]() {
-        regions = watcher->result();
-        for (const auto& reg : regions) {
+    QFutureWatcher<std::vector<RegionWithPokedex>> *watcher = 
+        new QFutureWatcher<std::vector<RegionWithPokedex>>(this);
+    
+    connect(watcher, &QFutureWatcher<std::vector<RegionWithPokedex>>::finished, 
+            this, [this, watcher]() {
+        std::vector<RegionWithPokedex> regionsWithPokedex = watcher->result();
+        
+        for (const auto& rwp : regionsWithPokedex) {
+            regions.push_back(rwp.region);
+            pokedexUrls[regions.size() - 1] = rwp.pokedex_url;
+            
             QListWidget *list = new QListWidget;
             list->addItem("Select this region to load Pokémon...");
             connect(list, &QListWidget::itemClicked, this, &PokedexUI::onPokemonSelected);
-            regionTabs->addTab(list, QString::fromStdString(reg.name));
+            regionTabs->addTab(list, QString::fromStdString(rwp.region.name));
         }
+        
         connect(regionTabs, &QTabWidget::currentChanged, this, &PokedexUI::onRegionTabChanged);
         
         // Auto-load first region
@@ -115,22 +120,32 @@ void PokedexUI::onRegionTabChanged(int index) {
     QListWidget *currentList = qobject_cast<QListWidget*>(regionTabs->widget(index));
     if (!currentList) return;
     
-    // Check if already loaded (more than just the placeholder)
+    // Check if already loaded
     if (currentList->count() > 1) return;
     
-    // Clear placeholder
+    // Clear and show loading
     currentList->clear();
     currentList->addItem("Loading...");
     
-    const std::string& regionName = regions[index].name;
+    // Get pokedex URL for this region
+    std::string pokedexUrl = pokedexUrls[index];
     
-    // Fetch Pokémon for this region asynchronously
-    QFuture<std::vector<std::string>> future = QtConcurrent::run([regionName]() {
-        return PokeAPI::fetchPokemonByRegion(regionName).get();
+    if (pokedexUrl.empty()) {
+        currentList->clear();
+        currentList->addItem("No Pokédex available for this region");
+        return;
+    }
+    
+    // Fetch Pokémon using the direct pokedex URL (much faster!)
+    QFuture<std::vector<std::string>> future = QtConcurrent::run([pokedexUrl]() {
+        return PokeAPI::fetchPokedexPokemon(pokedexUrl).get();
     });
     
-    QFutureWatcher<std::vector<std::string>> *watcher = new QFutureWatcher<std::vector<std::string>>(this);
-    connect(watcher, &QFutureWatcher<std::vector<std::string>>::finished, this, [this, watcher, currentList, index]() {
+    QFutureWatcher<std::vector<std::string>> *watcher = 
+        new QFutureWatcher<std::vector<std::string>>(this);
+    
+    connect(watcher, &QFutureWatcher<std::vector<std::string>>::finished, 
+            this, [this, watcher, currentList, index]() {
         std::vector<std::string> pokemonNames = watcher->result();
         
         currentList->clear();
@@ -169,13 +184,6 @@ void PokedexUI::onSearchClicked() {
     }
 }
 
-void PokedexUI::onListClicked() {
-    // Fetches first 10 pokemon just by iterating IDs
-    for(int i=1; i<=10; i++) {
-        // Note: Ideally this would populate a list, but for now we just display the last one
-        if(i==1) fetchAndDisplay(QString::number(i)); 
-    }
-}
 
 void PokedexUI::fetchAndDisplay(const QString& query) {
     std::string qStd = query.toStdString();

@@ -43,7 +43,6 @@ template <> constexpr inline auto PokedexUI::qt_create_metaobjectdata<qt_meta_ta
         "PokedexUI",
         "onSearchClicked",
         "",
-        "onListClicked",
         "onPokemonSelected",
         "QListWidgetItem*",
         "item",
@@ -54,15 +53,13 @@ template <> constexpr inline auto PokedexUI::qt_create_metaobjectdata<qt_meta_ta
     QtMocHelpers::UintData qt_methods {
         // Slot 'onSearchClicked'
         QtMocHelpers::SlotData<void()>(1, 2, QMC::AccessPrivate, QMetaType::Void),
-        // Slot 'onListClicked'
-        QtMocHelpers::SlotData<void()>(3, 2, QMC::AccessPrivate, QMetaType::Void),
         // Slot 'onPokemonSelected'
-        QtMocHelpers::SlotData<void(QListWidgetItem *)>(4, 2, QMC::AccessPrivate, QMetaType::Void, {{
-            { 0x80000000 | 5, 6 },
+        QtMocHelpers::SlotData<void(QListWidgetItem *)>(3, 2, QMC::AccessPrivate, QMetaType::Void, {{
+            { 0x80000000 | 4, 5 },
         }}),
         // Slot 'onRegionTabChanged'
-        QtMocHelpers::SlotData<void(int)>(7, 2, QMC::AccessPrivate, QMetaType::Void, {{
-            { QMetaType::Int, 8 },
+        QtMocHelpers::SlotData<void(int)>(6, 2, QMC::AccessPrivate, QMetaType::Void, {{
+            { QMetaType::Int, 7 },
         }}),
     };
     QtMocHelpers::UintData qt_properties {
@@ -88,9 +85,8 @@ void PokedexUI::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, v
     if (_c == QMetaObject::InvokeMetaMethod) {
         switch (_id) {
         case 0: _t->onSearchClicked(); break;
-        case 1: _t->onListClicked(); break;
-        case 2: _t->onPokemonSelected((*reinterpret_cast<std::add_pointer_t<QListWidgetItem*>>(_a[1]))); break;
-        case 3: _t->onRegionTabChanged((*reinterpret_cast<std::add_pointer_t<int>>(_a[1]))); break;
+        case 1: _t->onPokemonSelected((*reinterpret_cast<std::add_pointer_t<QListWidgetItem*>>(_a[1]))); break;
+        case 2: _t->onRegionTabChanged((*reinterpret_cast<std::add_pointer_t<int>>(_a[1]))); break;
         default: ;
         }
     }
@@ -115,14 +111,14 @@ int PokedexUI::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 4)
+        if (_id < 3)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 4;
+        _id -= 3;
     }
     if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 4)
+        if (_id < 3)
             *reinterpret_cast<QMetaType *>(_a[0]) = QMetaType();
-        _id -= 4;
+        _id -= 3;
     }
     return _id;
 }

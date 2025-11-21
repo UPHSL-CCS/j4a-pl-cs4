@@ -12,7 +12,7 @@
 
 # =============================================================================
 # Project: pokedex-project
-# Configurations: Debug
+# Configurations: Release
 # =============================================================================
 
 #############################################
@@ -24,7 +24,7 @@ ninja_required_version = 1.5
 #############################################
 # Set configuration variable for custom commands.
 
-CONFIGURATION = Debug
+CONFIGURATION = Release
 # =============================================================================
 # Include auxiliary files.
 
@@ -49,34 +49,34 @@ cmake_ninja_workdir = C$:/Users/kelvi/OneDrive/Documents/GitHub/j4a-pl-cs4/poked
 
 build cmake_object_order_depends_target_pokedex-project: phony || pokedex-project_autogen pokedex-project_autogen/mocs_compilation.cpp pokedex-project_autogen/timestamp pokedex-project_autogen_timestamp_deps
 
-build CMakeFiles/pokedex-project.dir/pokedex-project_autogen/mocs_compilation.cpp.obj: CXX_COMPILER__pokedex-project_unscanned_Debug C$:/Users/kelvi/OneDrive/Documents/GitHub/j4a-pl-cs4/pokedex-project/build/pokedex-project_autogen/mocs_compilation.cpp || cmake_object_order_depends_target_pokedex-project
-  DEFINES = -DMINGW_HAS_SECURE_API=1 -DQT_CONCURRENT_LIB -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN64
+build CMakeFiles/pokedex-project.dir/pokedex-project_autogen/mocs_compilation.cpp.obj: CXX_COMPILER__pokedex-project_unscanned_Release C$:/Users/kelvi/OneDrive/Documents/GitHub/j4a-pl-cs4/pokedex-project/build/pokedex-project_autogen/mocs_compilation.cpp || cmake_object_order_depends_target_pokedex-project
+  DEFINES = -DMINGW_HAS_SECURE_API=1 -DQT_CONCURRENT_LIB -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN64
   DEP_FILE = CMakeFiles\pokedex-project.dir\pokedex-project_autogen\mocs_compilation.cpp.obj.d
-  FLAGS = -DQT_QML_DEBUG -DQT_DECLARATIVE_DEBUG -g -std=gnu++17
+  FLAGS = -O3 -DNDEBUG -std=gnu++17
   INCLUDES = -IC:/Users/kelvi/OneDrive/Documents/GitHub/j4a-pl-cs4/pokedex-project/build/pokedex-project_autogen/include -IC:/Users/kelvi/OneDrive/Documents/GitHub/j4a-pl-cs4/pokedex-project/modules -isystem C:/dev/vcpkg/installed/x64-mingw-dynamic/include -isystem C:/Qt/6.10.1/mingw_64/include/QtCore -isystem C:/Qt/6.10.1/mingw_64/include -isystem C:/Qt/6.10.1/mingw_64/mkspecs/win32-g++ -isystem C:/Qt/6.10.1/mingw_64/include/QtGui -isystem C:/Qt/6.10.1/mingw_64/include/QtWidgets -isystem C:/Qt/6.10.1/mingw_64/include/QtConcurrent -isystem C:/Qt/6.10.1/mingw_64/include/QtNetwork
   OBJECT_DIR = CMakeFiles\pokedex-project.dir
   OBJECT_FILE_DIR = CMakeFiles\pokedex-project.dir\pokedex-project_autogen
 
-build CMakeFiles/pokedex-project.dir/main.cpp.obj: CXX_COMPILER__pokedex-project_unscanned_Debug C$:/Users/kelvi/OneDrive/Documents/GitHub/j4a-pl-cs4/pokedex-project/main.cpp || cmake_object_order_depends_target_pokedex-project
-  DEFINES = -DMINGW_HAS_SECURE_API=1 -DQT_CONCURRENT_LIB -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN64
+build CMakeFiles/pokedex-project.dir/main.cpp.obj: CXX_COMPILER__pokedex-project_unscanned_Release C$:/Users/kelvi/OneDrive/Documents/GitHub/j4a-pl-cs4/pokedex-project/main.cpp || cmake_object_order_depends_target_pokedex-project
+  DEFINES = -DMINGW_HAS_SECURE_API=1 -DQT_CONCURRENT_LIB -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN64
   DEP_FILE = CMakeFiles\pokedex-project.dir\main.cpp.obj.d
-  FLAGS = -DQT_QML_DEBUG -DQT_DECLARATIVE_DEBUG -g -std=gnu++17
+  FLAGS = -O3 -DNDEBUG -std=gnu++17
   INCLUDES = -IC:/Users/kelvi/OneDrive/Documents/GitHub/j4a-pl-cs4/pokedex-project/build/pokedex-project_autogen/include -IC:/Users/kelvi/OneDrive/Documents/GitHub/j4a-pl-cs4/pokedex-project/modules -isystem C:/dev/vcpkg/installed/x64-mingw-dynamic/include -isystem C:/Qt/6.10.1/mingw_64/include/QtCore -isystem C:/Qt/6.10.1/mingw_64/include -isystem C:/Qt/6.10.1/mingw_64/mkspecs/win32-g++ -isystem C:/Qt/6.10.1/mingw_64/include/QtGui -isystem C:/Qt/6.10.1/mingw_64/include/QtWidgets -isystem C:/Qt/6.10.1/mingw_64/include/QtConcurrent -isystem C:/Qt/6.10.1/mingw_64/include/QtNetwork
   OBJECT_DIR = CMakeFiles\pokedex-project.dir
   OBJECT_FILE_DIR = CMakeFiles\pokedex-project.dir
 
-build CMakeFiles/pokedex-project.dir/modules/pokeapi.cpp.obj: CXX_COMPILER__pokedex-project_unscanned_Debug C$:/Users/kelvi/OneDrive/Documents/GitHub/j4a-pl-cs4/pokedex-project/modules/pokeapi.cpp || cmake_object_order_depends_target_pokedex-project
-  DEFINES = -DMINGW_HAS_SECURE_API=1 -DQT_CONCURRENT_LIB -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN64
+build CMakeFiles/pokedex-project.dir/modules/pokeapi.cpp.obj: CXX_COMPILER__pokedex-project_unscanned_Release C$:/Users/kelvi/OneDrive/Documents/GitHub/j4a-pl-cs4/pokedex-project/modules/pokeapi.cpp || cmake_object_order_depends_target_pokedex-project
+  DEFINES = -DMINGW_HAS_SECURE_API=1 -DQT_CONCURRENT_LIB -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN64
   DEP_FILE = CMakeFiles\pokedex-project.dir\modules\pokeapi.cpp.obj.d
-  FLAGS = -DQT_QML_DEBUG -DQT_DECLARATIVE_DEBUG -g -std=gnu++17
+  FLAGS = -O3 -DNDEBUG -std=gnu++17
   INCLUDES = -IC:/Users/kelvi/OneDrive/Documents/GitHub/j4a-pl-cs4/pokedex-project/build/pokedex-project_autogen/include -IC:/Users/kelvi/OneDrive/Documents/GitHub/j4a-pl-cs4/pokedex-project/modules -isystem C:/dev/vcpkg/installed/x64-mingw-dynamic/include -isystem C:/Qt/6.10.1/mingw_64/include/QtCore -isystem C:/Qt/6.10.1/mingw_64/include -isystem C:/Qt/6.10.1/mingw_64/mkspecs/win32-g++ -isystem C:/Qt/6.10.1/mingw_64/include/QtGui -isystem C:/Qt/6.10.1/mingw_64/include/QtWidgets -isystem C:/Qt/6.10.1/mingw_64/include/QtConcurrent -isystem C:/Qt/6.10.1/mingw_64/include/QtNetwork
   OBJECT_DIR = CMakeFiles\pokedex-project.dir
   OBJECT_FILE_DIR = CMakeFiles\pokedex-project.dir\modules
 
-build CMakeFiles/pokedex-project.dir/modules/pokeui.cpp.obj: CXX_COMPILER__pokedex-project_unscanned_Debug C$:/Users/kelvi/OneDrive/Documents/GitHub/j4a-pl-cs4/pokedex-project/modules/pokeui.cpp || cmake_object_order_depends_target_pokedex-project
-  DEFINES = -DMINGW_HAS_SECURE_API=1 -DQT_CONCURRENT_LIB -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN64
+build CMakeFiles/pokedex-project.dir/modules/pokeui.cpp.obj: CXX_COMPILER__pokedex-project_unscanned_Release C$:/Users/kelvi/OneDrive/Documents/GitHub/j4a-pl-cs4/pokedex-project/modules/pokeui.cpp || cmake_object_order_depends_target_pokedex-project
+  DEFINES = -DMINGW_HAS_SECURE_API=1 -DQT_CONCURRENT_LIB -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN64
   DEP_FILE = CMakeFiles\pokedex-project.dir\modules\pokeui.cpp.obj.d
-  FLAGS = -DQT_QML_DEBUG -DQT_DECLARATIVE_DEBUG -g -std=gnu++17
+  FLAGS = -O3 -DNDEBUG -std=gnu++17
   INCLUDES = -IC:/Users/kelvi/OneDrive/Documents/GitHub/j4a-pl-cs4/pokedex-project/build/pokedex-project_autogen/include -IC:/Users/kelvi/OneDrive/Documents/GitHub/j4a-pl-cs4/pokedex-project/modules -isystem C:/dev/vcpkg/installed/x64-mingw-dynamic/include -isystem C:/Qt/6.10.1/mingw_64/include/QtCore -isystem C:/Qt/6.10.1/mingw_64/include -isystem C:/Qt/6.10.1/mingw_64/mkspecs/win32-g++ -isystem C:/Qt/6.10.1/mingw_64/include/QtGui -isystem C:/Qt/6.10.1/mingw_64/include/QtWidgets -isystem C:/Qt/6.10.1/mingw_64/include/QtConcurrent -isystem C:/Qt/6.10.1/mingw_64/include/QtNetwork
   OBJECT_DIR = CMakeFiles\pokedex-project.dir
   OBJECT_FILE_DIR = CMakeFiles\pokedex-project.dir\modules
@@ -89,11 +89,11 @@ build CMakeFiles/pokedex-project.dir/modules/pokeui.cpp.obj: CXX_COMPILER__poked
 #############################################
 # Link the executable pokedex-project.exe
 
-build pokedex-project.exe: CXX_EXECUTABLE_LINKER__pokedex-project_Debug CMakeFiles/pokedex-project.dir/pokedex-project_autogen/mocs_compilation.cpp.obj CMakeFiles/pokedex-project.dir/main.cpp.obj CMakeFiles/pokedex-project.dir/modules/pokeapi.cpp.obj CMakeFiles/pokedex-project.dir/modules/pokeui.cpp.obj | C$:/dev/vcpkg/installed/x64-mingw-dynamic/debug/lib/libcurl-d.dll.a C$:/Qt/6.10.1/mingw_64/lib/libQt6Widgets.a C$:/Qt/6.10.1/mingw_64/lib/libQt6Concurrent.a C$:/Qt/6.10.1/mingw_64/lib/libQt6Network.a C$:/Qt/6.10.1/mingw_64/lib/libQt6Gui.a C$:/Qt/6.10.1/mingw_64/lib/libQt6Core.a || pokedex-project_autogen pokedex-project_autogen_timestamp_deps
-  FLAGS = -DQT_QML_DEBUG -DQT_DECLARATIVE_DEBUG -g
-  LINK_LIBRARIES = C:/dev/vcpkg/installed/x64-mingw-dynamic/debug/lib/libcurl-d.dll.a  C:/Qt/6.10.1/mingw_64/lib/libQt6Widgets.a  C:/Qt/6.10.1/mingw_64/lib/libQt6Concurrent.a  C:/Qt/6.10.1/mingw_64/lib/libQt6Network.a  C:/Qt/6.10.1/mingw_64/lib/libQt6Gui.a  -ld3d11  -ldxgi  -ldxguid  -ld3d12  C:/Qt/6.10.1/mingw_64/lib/libQt6Core.a  -lmpr  -luserenv  -lws2_32  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
+build pokedex-project.exe: CXX_EXECUTABLE_LINKER__pokedex-project_Release CMakeFiles/pokedex-project.dir/pokedex-project_autogen/mocs_compilation.cpp.obj CMakeFiles/pokedex-project.dir/main.cpp.obj CMakeFiles/pokedex-project.dir/modules/pokeapi.cpp.obj CMakeFiles/pokedex-project.dir/modules/pokeui.cpp.obj | C$:/dev/vcpkg/installed/x64-mingw-dynamic/lib/libcurl.dll.a C$:/Qt/6.10.1/mingw_64/lib/libQt6Widgets.a C$:/Qt/6.10.1/mingw_64/lib/libQt6Concurrent.a C$:/Qt/6.10.1/mingw_64/lib/libQt6Network.a C$:/Qt/6.10.1/mingw_64/lib/libQt6Gui.a C$:/Qt/6.10.1/mingw_64/lib/libQt6Core.a || pokedex-project_autogen pokedex-project_autogen_timestamp_deps
+  FLAGS = -O3 -DNDEBUG
+  LINK_LIBRARIES = C:/dev/vcpkg/installed/x64-mingw-dynamic/lib/libcurl.dll.a  C:/Qt/6.10.1/mingw_64/lib/libQt6Widgets.a  C:/Qt/6.10.1/mingw_64/lib/libQt6Concurrent.a  C:/Qt/6.10.1/mingw_64/lib/libQt6Network.a  C:/Qt/6.10.1/mingw_64/lib/libQt6Gui.a  -ld3d11  -ldxgi  -ldxguid  -ld3d12  C:/Qt/6.10.1/mingw_64/lib/libQt6Core.a  -lmpr  -luserenv  -lws2_32  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = CMakeFiles\pokedex-project.dir
-  POST_BUILD = C:\WINDOWS\system32\cmd.exe /C "cd /D C:\Users\kelvi\OneDrive\Documents\GitHub\j4a-pl-cs4\pokedex-project\build && C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -noprofile -executionpolicy Bypass -file C:/dev/vcpkg/scripts/buildsystems/msbuild/applocal.ps1 -targetBinary C:/Users/kelvi/OneDrive/Documents/GitHub/j4a-pl-cs4/pokedex-project/build/pokedex-project.exe -installedDir C:/dev/vcpkg/installed/x64-mingw-dynamic/debug/bin -OutVariable out"
+  POST_BUILD = C:\WINDOWS\system32\cmd.exe /C "cd /D C:\Users\kelvi\OneDrive\Documents\GitHub\j4a-pl-cs4\pokedex-project\build && C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -noprofile -executionpolicy Bypass -file C:/dev/vcpkg/scripts/buildsystems/msbuild/applocal.ps1 -targetBinary C:/Users/kelvi/OneDrive/Documents/GitHub/j4a-pl-cs4/pokedex-project/build/pokedex-project.exe -installedDir C:/dev/vcpkg/installed/x64-mingw-dynamic/bin -OutVariable out"
   PRE_LINK = cd .
   TARGET_FILE = pokedex-project.exe
   TARGET_IMPLIB = libpokedex-project.dll.a
@@ -140,7 +140,7 @@ build pokedex-project_autogen: phony CMakeFiles/pokedex-project_autogen pokedex-
 # Custom command for pokedex-project_autogen\timestamp
 
 build pokedex-project_autogen/timestamp pokedex-project_autogen/mocs_compilation.cpp | ${cmake_ninja_workdir}pokedex-project_autogen/timestamp ${cmake_ninja_workdir}pokedex-project_autogen/mocs_compilation.cpp: CUSTOM_COMMAND C$:/Qt/6.10.1/mingw_64/bin/moc.exe C$:/Qt/6.10.1/mingw_64/bin/uic.exe || pokedex-project_autogen_timestamp_deps
-  COMMAND = C:\WINDOWS\system32\cmd.exe /C "cd /D C:\Users\kelvi\OneDrive\Documents\GitHub\j4a-pl-cs4\pokedex-project\build && C:\Qt\Tools\CMake_64\bin\cmake.exe -E cmake_autogen C:/Users/kelvi/OneDrive/Documents/GitHub/j4a-pl-cs4/pokedex-project/build/CMakeFiles/pokedex-project_autogen.dir/AutogenInfo.json Debug && C:\Qt\Tools\CMake_64\bin\cmake.exe -E touch C:/Users/kelvi/OneDrive/Documents/GitHub/j4a-pl-cs4/pokedex-project/build/pokedex-project_autogen/timestamp && C:\Qt\Tools\CMake_64\bin\cmake.exe -E cmake_transform_depfile Ninja gccdepfile C:/Users/kelvi/OneDrive/Documents/GitHub/j4a-pl-cs4/pokedex-project C:/Users/kelvi/OneDrive/Documents/GitHub/j4a-pl-cs4/pokedex-project C:/Users/kelvi/OneDrive/Documents/GitHub/j4a-pl-cs4/pokedex-project/build C:/Users/kelvi/OneDrive/Documents/GitHub/j4a-pl-cs4/pokedex-project/build C:/Users/kelvi/OneDrive/Documents/GitHub/j4a-pl-cs4/pokedex-project/build/pokedex-project_autogen/deps C:/Users/kelvi/OneDrive/Documents/GitHub/j4a-pl-cs4/pokedex-project/build/CMakeFiles/d/a001d025a9c52bda7ddc817f2914221ccd02ec9cf549d673ec336291f9a770a8.d"
+  COMMAND = C:\WINDOWS\system32\cmd.exe /C "cd /D C:\Users\kelvi\OneDrive\Documents\GitHub\j4a-pl-cs4\pokedex-project\build && C:\Qt\Tools\CMake_64\bin\cmake.exe -E cmake_autogen C:/Users/kelvi/OneDrive/Documents/GitHub/j4a-pl-cs4/pokedex-project/build/CMakeFiles/pokedex-project_autogen.dir/AutogenInfo.json Release && C:\Qt\Tools\CMake_64\bin\cmake.exe -E touch C:/Users/kelvi/OneDrive/Documents/GitHub/j4a-pl-cs4/pokedex-project/build/pokedex-project_autogen/timestamp && C:\Qt\Tools\CMake_64\bin\cmake.exe -E cmake_transform_depfile Ninja gccdepfile C:/Users/kelvi/OneDrive/Documents/GitHub/j4a-pl-cs4/pokedex-project C:/Users/kelvi/OneDrive/Documents/GitHub/j4a-pl-cs4/pokedex-project C:/Users/kelvi/OneDrive/Documents/GitHub/j4a-pl-cs4/pokedex-project/build C:/Users/kelvi/OneDrive/Documents/GitHub/j4a-pl-cs4/pokedex-project/build C:/Users/kelvi/OneDrive/Documents/GitHub/j4a-pl-cs4/pokedex-project/build/pokedex-project_autogen/deps C:/Users/kelvi/OneDrive/Documents/GitHub/j4a-pl-cs4/pokedex-project/build/CMakeFiles/d/a001d025a9c52bda7ddc817f2914221ccd02ec9cf549d673ec336291f9a770a8.d"
   DESC = Automatic MOC and UIC for target pokedex-project
   depfile = CMakeFiles\d\a001d025a9c52bda7ddc817f2914221ccd02ec9cf549d673ec336291f9a770a8.d
   deps = gcc
@@ -188,7 +188,7 @@ build C$:/Qt/6.10.1/mingw_64/lib/cmake/Qt6Concurrent/Qt6ConcurrentAdditionalTarg
 # Clean additional files.
 
 build CMakeFiles/clean.additional: CLEAN_ADDITIONAL
-  CONFIG = Debug
+  CONFIG = Release
 
 
 #############################################

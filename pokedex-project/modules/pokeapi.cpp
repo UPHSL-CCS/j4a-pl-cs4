@@ -19,6 +19,36 @@ size_t WriteCallback(void* contents, size_t size, size_t nmemb, std::string* s) 
     return newLength;
 }
 
+std::future<std::vector<std::string>> PokeAPI::fetchPokedexPokemon(const std::string& pokedexUrl) {
+    return std::async(std::launch::async, [pokedexUrl]() {
+        CURL* curl = curl_easy_init();
+        std::string response;
+        
+        if (curl) {
+            curl_easy_setopt(curl, CURLOPT_URL, pokedexUrl.c_str());
+            curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
+            curl_easy_setopt(curl, CURLOPT_WRITEDATA, &response);
+            curl_easy_setopt(curl, CURLOPT_USERAGENT, "libcurl-agent/1.0");
+            
+            CURLcode res = curl_easy_perform(curl);
+            curl_easy_cleanup(curl);
+            
+            if (res == CURLE_OK) {
+                json data = json::parse(response);
+                std::vector<std::string> pokemonNames;
+                
+                if (data.contains("pokemon_entries")) {
+                    for (const auto& entry : data["pokemon_entries"]) {
+                        pokemonNames.push_back(entry["pokemon_species"]["name"].get<std::string>());
+                    }
+                }
+                return pokemonNames;
+            }
+        }
+        return std::vector<std::string>{};
+    });
+}
+
 // Helper to fetch description from species
 std::string PokeAPI::fetchSpeciesDescription(int id) {
     CURL* curl = curl_easy_init();
@@ -144,7 +174,7 @@ std::future<Pokemon> PokeAPI::fetchPokemonWithDescription(const std::string& que
 }
 
 // Fetch regions
-std::future<std::vector<Region>> PokeAPI::fetchRegions() {
+std::future<std::vector<RegionWithPokedex>> PokeAPI::fetchRegionsWithPokedexUrls() {
     return std::async(std::launch::async, []() {
         CURL* curl = curl_easy_init();
         std::string url = "https://pokeapi.co/api/v2/region";
@@ -161,22 +191,41 @@ std::future<std::vector<Region>> PokeAPI::fetchRegions() {
             
             if (res == CURLE_OK) {
                 json data = json::parse(response);
-                std::vector<Region> regions;
+                std::vector<RegionWithPokedex> regionsWithPokedex;
                 
                 for (const auto& reg : data["results"]) {
-                    Region r;
-                    r.id = (int)regions.size() + 1;
-                    r.name = reg["name"].get<std::string>();
+                    RegionWithPokedex rwp;
+                    rwp.region.id = (int)regionsWithPokedex.size() + 1;
+                    rwp.region.name = reg["name"].get<std::string>();
                     
-                    // NOTE: Fetching details for EVERY region inside this loop 
-                    // will be very slow. Consider doing this separately or lazily.
+                    // Fetch region details to get pokedex URL
+                    std::string regionUrl = reg["url"].get<std::string>();
+                    CURL* curl2 = curl_easy_init();
+                    std::string regionResponse;
                     
-                    regions.push_back(r);
+                    if (curl2) {
+                        curl_easy_setopt(curl2, CURLOPT_URL, regionUrl.c_str());
+                        curl_easy_setopt(curl2, CURLOPT_WRITEFUNCTION, WriteCallback);
+                        curl_easy_setopt(curl2, CURLOPT_WRITEDATA, &regionResponse);
+                        curl_easy_setopt(curl2, CURLOPT_USERAGENT, "libcurl-agent/1.0");
+                        
+                        CURLcode res2 = curl_easy_perform(curl2);
+                        curl_easy_cleanup(curl2);
+                        
+                        if (res2 == CURLE_OK) {
+                            json regionData = json::parse(regionResponse);
+                            if (regionData.contains("pokedexes") && !regionData["pokedexes"].empty()) {
+                                rwp.pokedex_url = regionData["pokedexes"][0]["url"].get<std::string>();
+                            }
+                        }
+                    }
+                    
+                    regionsWithPokedex.push_back(rwp);
                 }
-                return regions;
+                return regionsWithPokedex;
             }
         }
-        return std::vector<Region>{}; // Return empty vector on failure
+        return std::vector<RegionWithPokedex>{};
     });
 }
 

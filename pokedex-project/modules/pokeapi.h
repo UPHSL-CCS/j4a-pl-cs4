@@ -18,10 +18,11 @@ public:
     // Fixed name to match .cpp: fetchPokemonWithDescription
     static std::future<Pokemon> fetchPokemonWithDescription(const std::string& query);
 
-    static std::future<std::vector<Region>> fetchRegions();
+    static std::future<std::vector<RegionWithPokedex>> fetchRegionsWithPokedexUrls();
 
     static std::future<std::vector<std::string>> fetchPokemonByRegion(const std::string& regionName);
 
+    static std::future<std::vector<std::string>> fetchPokedexPokemon(const std::string& pokedexUrl);
 private:
     // Fixed return type: Returns 'Pokemon' object, not 'string'
     static Pokemon parsePokemonData(const std::string& json); 

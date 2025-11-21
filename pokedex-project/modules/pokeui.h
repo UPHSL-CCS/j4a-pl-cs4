@@ -20,6 +20,7 @@
 #include <QtConcurrent> 
 #include <QtNetwork/QNetworkAccessManager>
 #include <QtNetwork/QNetworkReply>
+#include <map>
 
 // FIXED: Renamed class from PokedexWindow to PokedexUI
 class PokedexUI : public QMainWindow {
@@ -32,7 +33,6 @@ public:
 
 private slots:
     void onSearchClicked();
-    void onListClicked();
     void onPokemonSelected(QListWidgetItem *item);
     void onRegionTabChanged(int index);
 
@@ -42,13 +42,13 @@ private:
     void fetchAndDisplay(const QString& query);
     void displayPokemon(const Pokemon& p);
     void displayError(const QString& msg);
+    std::map<int, std::string> pokedexUrls; // Store pokedex URLs by region index
 
     // UI Components matching your .cpp
     QSplitter *mainSplitter;
     QTabWidget *regionTabs;
     QLineEdit *searchInput;
     QPushButton *searchButton;
-    QPushButton *listButton;
     
     QLabel *nameLabel;
     QLabel *idLabel;
