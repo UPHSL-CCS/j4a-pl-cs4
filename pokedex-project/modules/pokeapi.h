@@ -5,17 +5,26 @@
 #include <vector>
 #include <future>
 #include "pokedata.h"
-using namespace std;
+
+// REMOVED: using namespace std; (This fixes the "ambiguous byte" error)
 
 class PokeAPI {
 public:
-    static future<Pokemon> fetchPokemon(const string& query); // async fetch for concurrency
-    static vector<future<Pokemon>> fetchMultiplePokemons(int count); // fetch multiple pokemons concurrently
-    static future<Pokemon> fetchPokemonDescription(const string& query);
-    static future<vector<Region>> fetchRegions();
+    // Fixed name to match .cpp: fetchMultiplePokemon (Singular)
+    static std::vector<std::future<Pokemon>> fetchMultiplePokemon(int count); 
+
+    static std::future<Pokemon> fetchPokemon(const std::string& query);
+    
+    // Fixed name to match .cpp: fetchPokemonWithDescription
+    static std::future<Pokemon> fetchPokemonWithDescription(const std::string& query);
+
+    static std::future<std::vector<Region>> fetchRegions();
+
 private:
-    static string parsePokemonData(const string& json); // helper for parsing pokemon data from JSON
-    static string fetchSpeciesDescription(int id); // helper for fetching species description by id
+    // Fixed return type: Returns 'Pokemon' object, not 'string'
+    static Pokemon parsePokemonData(const std::string& json); 
+
+    static std::string fetchSpeciesDescription(int id); 
 };
 
 #endif

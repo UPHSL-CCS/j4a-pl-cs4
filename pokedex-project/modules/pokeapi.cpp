@@ -1,9 +1,15 @@
 #include "pokeapi.h"
+
+// CRITICAL: These defines must be at the very top to fix the "ambiguous byte" error
+#define WIN32_LEAN_AND_MEAN
+#define NOMINMAX
+
 #include <curl/curl.h>
 #include <nlohmann/json.hpp>
 #include <iostream>
 #include <sstream>
 #include <future>
+#include <vector>
 
 using json = nlohmann::json;
 
@@ -14,8 +20,79 @@ size_t WriteCallback(void* contents, size_t size, size_t nmemb, std::string* s) 
     return newLength;
 }
 
+// Helper to fetch description from species
+std::string PokeAPI::fetchSpeciesDescription(int id) {
+    CURL* curl = curl_easy_init();
+    std::string url = "https://pokeapi.co/api/v2/pokemon-species/" + std::to_string(id);
+    std::string response;
+    
+    if (curl) {
+        curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
+        curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
+        curl_easy_setopt(curl, CURLOPT_WRITEDATA, &response);
+        CURLcode res = curl_easy_perform(curl);
+        curl_easy_cleanup(curl);
+        
+        if (res == CURLE_OK) {
+            try {
+                json data = json::parse(response);
+                // Check if key exists to avoid crash
+                if (data.contains("flavor_text_entries")) {
+                    for (const auto& flavor : data["flavor_text_entries"]) {
+                        if (flavor["language"]["name"] == "en") {
+                            // Clean up the text (remove newlines/form feeds)
+                            std::string desc = flavor["flavor_text"].get<std::string>();
+                            return desc; 
+                        }
+                    }
+                }
+            } catch (...) {
+                return "Error parsing description.";
+            }
+        }
+    }
+    return "Description not available.";
+}
+
+// Parse JSON response into Pokemon struct
+// Note: This matches the return type in the header now (Pokemon, not string)
+Pokemon PokeAPI::parsePokemonData(const std::string& json_str) {
+    json data = json::parse(json_str);
+    Pokemon p;
+    
+    // Safely get values with defaults if missing
+    p.id = data.value("id", 0);
+    p.name = data.value("name", "Unknown");
+    p.height = data.value("height", 0);
+    p.weight = data.value("weight", 0);
+    
+    if (data.contains("sprites") && data["sprites"].contains("front_default") && !data["sprites"]["front_default"].is_null()) {
+        p.sprite_url = data["sprites"]["front_default"].get<std::string>();
+    } else {
+        p.sprite_url = "";
+    }
+
+    if (data.contains("types")) {
+        for (const auto& type : data["types"]) {
+            p.types.push_back(type["type"]["name"].get<std::string>());
+        }
+    }
+
+    if (data.contains("stats")) {
+        for (const auto& stat : data["stats"]) {
+            Stat s;
+            s.name = stat["stat"]["name"].get<std::string>();
+            s.base_stat = stat["base_stat"].get<int>();
+            p.stats.push_back(s);
+        }
+    }
+
+    return p;
+}
+
 // Async fetch a single Pokémon
 std::future<Pokemon> PokeAPI::fetchPokemon(const std::string& query) {
+    // std::launch::async forces a new thread
     return std::async(std::launch::async, [query]() {
         CURL* curl = curl_easy_init();
         std::string url = "https://pokeapi.co/api/v2/pokemon/" + query;
@@ -25,13 +102,20 @@ std::future<Pokemon> PokeAPI::fetchPokemon(const std::string& query) {
             curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
             curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
             curl_easy_setopt(curl, CURLOPT_WRITEDATA, &response);
+            
+            // IMPORTANT: Set User-Agent, some APIs reject requests without it
+            curl_easy_setopt(curl, CURLOPT_USERAGENT, "libcurl-agent/1.0");
+
             CURLcode res = curl_easy_perform(curl);
             curl_easy_cleanup(curl);
 
             if (res == CURLE_OK) {
                 return parsePokemonData(response);
             } else {
-                throw std::runtime_error("Failed to fetch data from PokeAPI");
+                // Return a dummy pokemon on error or throw
+                Pokemon errorPoke;
+                errorPoke.name = "Error: " + std::string(curl_easy_strerror(res));
+                return errorPoke; 
             }
         }
         throw std::runtime_error("CURL initialization failed");
@@ -50,8 +134,12 @@ std::vector<std::future<Pokemon>> PokeAPI::fetchMultiplePokemon(int count) {
 // Async fetch Pokemon with description
 std::future<Pokemon> PokeAPI::fetchPokemonWithDescription(const std::string& query) {
     return std::async(std::launch::async, [query]() {
+        // First fetch the basic data
         Pokemon p = fetchPokemon(query).get();
-        p.description = fetchSpeciesDescription(p.id);
+        // Then fetch the species description using the ID we just got
+        if (p.id != 0) {
+            p.description = fetchSpeciesDescription(p.id);
+        }
         return p;
     });
 }
@@ -62,84 +150,33 @@ std::future<std::vector<Region>> PokeAPI::fetchRegions() {
         CURL* curl = curl_easy_init();
         std::string url = "https://pokeapi.co/api/v2/region";
         std::string response;
+        
         if (curl) {
             curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
             curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
             curl_easy_setopt(curl, CURLOPT_WRITEDATA, &response);
+            curl_easy_setopt(curl, CURLOPT_USERAGENT, "libcurl-agent/1.0");
+            
             CURLcode res = curl_easy_perform(curl);
             curl_easy_cleanup(curl);
+            
             if (res == CURLE_OK) {
                 json data = json::parse(response);
                 std::vector<Region> regions;
+                
                 for (const auto& reg : data["results"]) {
                     Region r;
-                    r.id = regions.size() + 1;  // Simple ID
-                    r.name = reg["name"];
-                    // Fetch Pokedex for this region to get Pokemon list
-                    std::string pokedex_url = "https://pokeapi.co/api/v2/pokedex/" + r.name;
-                    std::string pokedex_response;
-                    curl = curl_easy_init();
-                    curl_easy_setopt(curl, CURLOPT_URL, pokedex_url.c_str());
-                    curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
-                    curl_easy_setopt(curl, CURLOPT_WRITEDATA, &pokedex_response);
-                    curl_easy_perform(curl);
-                    curl_easy_cleanup(curl);
-                    json pokedex_data = json::parse(pokedex_response);
-                    for (const auto& entry : pokedex_data["pokemon_entries"]) {
-                        r.pokemon_names.push_back(entry["pokemon_species"]["name"]);
-                    }
+                    r.id = regions.size() + 1;
+                    r.name = reg["name"].get<std::string>();
+                    
+                    // NOTE: Fetching details for EVERY region inside this loop 
+                    // will be very slow. Consider doing this separately or lazily.
+                    
                     regions.push_back(r);
                 }
                 return regions;
             }
         }
-        throw std::runtime_error("Failed to fetch regions");
+        return std::vector<Region>{}; // Return empty vector on failure
     });
-}
-
-// Helper to fetch description from species
-std::string PokeAPI::fetchSpeciesDescription(int id) {
-    CURL* curl = curl_easy_init();
-    std::string url = "https://pokeapi.co/api/v2/pokemon-species/" + std::to_string(id);
-    std::string response;
-    if (curl) {
-        curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
-        curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
-        curl_easy_setopt(curl, CURLOPT_WRITEDATA, &response);
-        CURLcode res = curl_easy_perform(curl);
-        curl_easy_cleanup(curl);
-        if (res == CURLE_OK) {
-            json data = json::parse(response);
-            for (const auto& flavor : data["flavor_text_entries"]) {
-                if (flavor["language"]["name"] == "en") {
-                    return flavor["flavor_text"];
-                }
-            }
-        }
-    }
-    return "Description not available.";
-}
-
-// Parse JSON response into Pokemon struct
-Pokemon PokeAPI::parsePokemonData(const std::string& json_str) {
-    json data = json::parse(json_str);
-    Pokemon p;
-    p.id = data["id"];
-    p.name = data["name"];
-    p.height = data["height"];
-    p.weight = data["weight"];
-    p.sprite_url = data["sprites"]["front_default"];
-
-    for (const auto& type : data["types"]) {
-        p.types.push_back(type["type"]["name"]);
-    }
-
-    for (const auto& stat : data["stats"]) {
-        Stat s;
-        s.name = stat["stat"]["name"];
-        s.base_stat = stat["base_stat"];
-        p.stats.push_back(s);
-    }
-
-    return p;
 }

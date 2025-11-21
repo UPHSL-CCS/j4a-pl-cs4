@@ -24,7 +24,7 @@ struct Pokemon {
 struct Region {
     int id;
     string name;
-    string pokemon_names;
+    vector<std::string> pokemon_names;
 };
 
 #endif
