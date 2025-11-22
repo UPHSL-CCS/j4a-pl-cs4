@@ -10,9 +10,6 @@
 
 class PokeAPI {
 public:
-    // Fixed name to match .cpp: fetchMultiplePokemon (Singular)
-    static std::vector<std::future<Pokemon>> fetchMultiplePokemon(int count); 
-
     static std::future<Pokemon> fetchPokemon(const std::string& query);
     
     // Fixed name to match .cpp: fetchPokemonWithDescription
