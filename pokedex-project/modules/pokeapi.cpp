@@ -151,15 +151,6 @@ std::future<Pokemon> PokeAPI::fetchPokemon(const std::string& query) {
     });
 }
 
-// Fetch multiple Pokémon concurrently
-std::vector<std::future<Pokemon>> PokeAPI::fetchMultiplePokemon(int count) {
-    std::vector<std::future<Pokemon>> futures;
-    for (int i = 1; i <= count; ++i) {
-        futures.push_back(fetchPokemon(std::to_string(i)));
-    }
-    return futures;
-}
-
 // Async fetch Pokemon with description
 std::future<Pokemon> PokeAPI::fetchPokemonWithDescription(const std::string& query) {
     return std::async(std::launch::async, [query]() {
