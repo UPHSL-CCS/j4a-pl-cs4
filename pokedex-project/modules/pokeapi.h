@@ -12,7 +12,6 @@ class PokeAPI {
 public:
     static std::future<Pokemon> fetchPokemon(const std::string& query);
     
-    // Fixed name to match .cpp: fetchPokemonWithDescription
     static std::future<Pokemon> fetchPokemonWithDescription(const std::string& query);
 
     static std::future<std::vector<RegionWithPokedex>> fetchRegionsWithPokedexUrls();
