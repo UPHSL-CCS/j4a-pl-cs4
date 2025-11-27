@@ -1,0 +1,8 @@
+{
+    "files.associations": {
+        "mutex": "cpp",
+        "thread": "cpp",
+        "iostream": "cpp"
+    },
+    "cmake.sourceDirectory": "C:/Users/kelvi/OneDrive/Documents/GitHub/j4a-pl-cs4/pokedex-project/modules/UI"
+}

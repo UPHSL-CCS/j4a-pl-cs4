@@ -3,22 +3,20 @@
 # PIL (Pillow) - para sa images (Pokémon silhouettes)
 # Threading - para makapag-load ng API data nang hindi nagha-hang yung app
 # Custom modules - logic (rules ng game) at API fetching
+# Scrollbar/Canvas - special widgets for scrollable content and drawing
+# requests - Allows code to connect to websites or APIs and download data.
 import tkinter as tk
-# UPDATED IMPORT: replaced scrolledtext with scrollbar, canvas, and frame
 from tkinter import ttk, messagebox, Scrollbar, Canvas 
 from PIL import ImageTk, Image
 import threading
 from modules.game_logic import PokemonGame
 from modules.pokemon_api import get_random_pokemon
-# NEW IMPORT for Catalogue
 from modules.catalogue_viewer import fetch_catalogue_data
 import requests
-from io import BytesIO
-
+from io import BytesIO # Image downloads come as raw bytes, not files (PIL is dependent here)
 
 # === MAIN APP WINDOW ===
 class PokemonApp(tk.Tk):
-# ... (Keep PokemonApp class unchanged) ...
     def __init__(self):
         # super() is for parent class (tk.Tk) para ma-inherit yung window features
         super().__init__()
@@ -29,12 +27,12 @@ class PokemonApp(tk.Tk):
         # parang sinasabi natin: "itong specific window na to"
         self.game = PokemonGame()  # game logic instance galing sa ibang module
         self.catalogue_data = None # Store catalogue data once fetched
-        self.catalogue_photo_refs = [] # NEW: Crucial to prevent garbage collection of images
+        self.catalogue_photo_refs = [] # to prevent garbage collection of images
 
         # Timer variables para sa sabay-sabay na processes (concurrency)
         self.timer_id = None
-        self.remaining_time = 0
-        self.pokemon_silhouette_tk = None
+        self.remaining_time = 0 # coundown
+        self.pokemon_silhouette_tk = None #store the Tkinter image object kasi it will disappear if not
 
         # Container na mag-hohold ng multiple frames (screens)
         self.container = ttk.Frame(self)
@@ -48,6 +46,7 @@ class PokemonApp(tk.Tk):
             frame = F(self.container, self)
             self.frames[F] = frame
             frame.grid(row=0, column=0, sticky="nsew")
+        # this code just places the screen on top of each other. parang overlap lang. 
 
         # Unang screen na lalabas
         self.show_frame(StartMenuScreen)
@@ -148,7 +147,6 @@ class PokemonApp(tk.Tk):
 
 # === NEW SCREEN 1: START MENU (Replaces old DifficultyScreen as 1st screen) ===
 class StartMenuScreen(ttk.Frame):
-# ... (Keep StartMenuScreen class unchanged) ...
     def __init__(self, parent, controller):
         super().__init__(parent, padding=20)
         self.controller = controller
@@ -168,7 +166,7 @@ class StartMenuScreen(ttk.Frame):
             self.controller.open_catalogue()
         else:
             # If data is not loaded, start the loading process
-            self.catalogue_button.config(text="Loading Catalogue...", state="disabled")
+            self.catalogue_button.config(text="Loading Catalogue...", state="disabled") # para di makapindot
             # Use the concurrent module to fetch data
             fetch_catalogue_data(
                 callback=lambda data: self.controller.after(0, self.on_catalogue_loaded_success, data),
@@ -262,7 +260,8 @@ class GameScreen(ttk.Frame):
         Displays the result message on the screen for 2 seconds and handles the flow.
         """
         self.controller.stop_timer()
-        
+
+        # eto yung part na nagsshow kung ano yung tamang sagot
         # Update UI with the result
         self.result_label.config(text=message, foreground=color)
         self.guess_entry.config(state="disabled")
@@ -363,7 +362,6 @@ class GameScreen(ttk.Frame):
 
 # === SCREEN 4: GAME OVER SCREEN (Same as before) ===
 class GameOverScreen(ttk.Frame):
-# ... (Keep GameOverScreen class unchanged) ...
     def __init__(self, parent, controller):
         super().__init__(parent, padding=20)
         self.controller = controller
@@ -386,96 +384,92 @@ class GameOverScreen(ttk.Frame):
 
         self.results_label.config(text=f"You Caught:\n{caught}\n\nGot Away:\n{got_away}")
 
-
-# === UPDATED SCREEN 5: CATALOGUE VIEWER (Fixed Layout) ===
-# === UPDATED SCREEN 5: CATALOGUE VIEWER (Optimized Layout) ===
+#Screen 5: CatalogueScreen
 class CatalogueScreen(ttk.Frame):
     def __init__(self, parent, controller):
-        # We increase the padding slightly to ensure internal elements have space
         super().__init__(parent, padding=10) 
         self.controller = controller
         
+        # Title
         ttk.Label(self, text="Pokémon Catalogue (Gen 1)", font=("Arial", 20, "bold")).pack(pady=10)
         
         # --- Setup Scrollable Canvas ---
-        # Create a container frame for the canvas and scrollbar
-        # This container will take up the *middle* of the fixed window space.
         scroll_container = ttk.Frame(self)
-        # Use fill="both" and expand=True so the canvas takes up all space between
-        # the title and the 'Back to Menu' button, fitting within the 400x550 window.
         scroll_container.pack(fill="both", expand=True, padx=5, pady=5) 
         
-        canvas = tk.Canvas(scroll_container, borderwidth=0, height=400)
-        scrollbar = ttk.Scrollbar(scroll_container, orient="vertical", command=canvas.yview)
+        # Create Canvas and Scrollbar
+        self.canvas = tk.Canvas(scroll_container, borderwidth=0, highlightthickness=0, height=400)
+        self.scrollbar = ttk.Scrollbar(scroll_container, orient="vertical", command=self.canvas.yview)
         
         # Inner frame to hold the catalogue items
-        self.scrollable_frame = ttk.Frame(canvas)
+        self.scrollable_frame = ttk.Frame(self.canvas)
 
-        # Bind the frame's size changes to update the canvas scroll region
+        # 1. TELL THE CANVAS TO SCROLL THE FRAME
         self.scrollable_frame.bind(
             "<Configure>",
-            lambda e: canvas.configure(
-                scrollregion=canvas.bbox("all")
-            )
+            lambda e: self.canvas.configure(scrollregion=self.canvas.bbox("all"))
         )
 
-        canvas.create_window((0, 0), window=self.scrollable_frame, anchor="nw")
-        canvas.configure(yscrollcommand=scrollbar.set)
+        #Create the window inside the canvas
+        
+        self.window_id = self.canvas.create_window((0, 0), window=self.scrollable_frame, anchor="nw")
 
-        # PACK canvas and scrollbar into the scroll_container
-        canvas.pack(side="left", fill="both", expand=True)
-        scrollbar.pack(side="right", fill="y")
+        # Force the inner frame to match the Canvas width
+        # This ensures the list items shrink slightly to make room for the scrollbar
+        self.canvas.bind(
+            '<Configure>', 
+            lambda e: self.canvas.itemconfig(self.window_id, width=e.width)
+        )
+
+        self.canvas.configure(yscrollcommand=self.scrollbar.set)
+
+        #Scrollbar on right, Canvas fills the rest
+        self.scrollbar.pack(side="right", fill="y")
+        self.canvas.pack(side="left", fill="both", expand=True)
         
-        # --- End Setup Scrollable Canvas ---
-        
-        # Button to return to the main menu (Packed LAST to ensure it's at the bottom)
-        # The (5, 10) padding gives 5px at the top and 10px at the bottom edge.
+        # Back Button
         ttk.Button(self, text="Back to Menu", command=lambda: controller.show_frame(StartMenuScreen)).pack(fill="x", ipady=5, pady=(5, 10))
         
     def load_catalogue(self, data):
-        # Clear any existing widgets from the scrollable frame
+        # Clear existing widgets
         for widget in self.scrollable_frame.winfo_children():
             widget.destroy()
         
-        # Clear image references in the controller to prevent memory leak
         self.controller.catalogue_photo_refs = []
 
         if not data:
             ttk.Label(self.scrollable_frame, text="Catalogue data is not available.").pack(pady=20)
             return
 
-        # Iterate and create a widget for each Pokémon
+        # Loop to create rows
         for entry in data:
-            # Container frame for one Pokémon entry (ID, Sprite, Name, Types)
+            # Container frame for one Pokémon
             entry_frame = ttk.Frame(self.scrollable_frame, padding=5, relief="solid", borderwidth=1)
-            entry_frame.pack(fill="x", padx=5, pady=2)
+            entry_frame.pack(fill="x", padx=2, pady=2) # padx=2 keeps it clean inside the canvas
             
-            # 1. ID Label
-            id_label = ttk.Label(entry_frame, text=f"#{entry['id']:03d}", font=("Arial", 10, "bold"), width=4)
-            id_label.pack(side="left", padx=5)
+            # ID
+            ttk.Label(entry_frame, text=f"#{entry['id']:03d}", font=("Arial", 10, "bold"), width=4).pack(side="left", padx=5)
 
-            # 2. Sprite Image
-            # Create a Tkinter PhotoImage object from the PIL Image
+            # Image
             sprite_tk = ImageTk.PhotoImage(entry['sprite_image'])
-            # Store a reference to prevent garbage collection
             self.controller.catalogue_photo_refs.append(sprite_tk)
             
-            sprite_label = ttk.Label(entry_frame, image=sprite_tk)
-            sprite_label.image = sprite_tk # Keep a local reference too, just in case
-            sprite_label.pack(side="left", padx=10)
+            lbl_img = ttk.Label(entry_frame, image=sprite_tk)
+            lbl_img.image = sprite_tk 
+            lbl_img.pack(side="left", padx=10)
             
-            # 3. Name Label
-            name_label = ttk.Label(entry_frame, text=entry['name'], font=("Arial", 12), width=15, anchor="w")
-            name_label.pack(side="left", fill="x", expand=True)
+            # Name
+            ttk.Label(entry_frame, text=entry['name'], font=("Arial", 12), width=12, anchor="w").pack(side="left")
 
-            # 4. Types Label
+            # Types,Right Aligned
             types_text = " / ".join(entry['types'])
-            types_label = ttk.Label(entry_frame, text=types_text, font=("Arial", 10), anchor="e")
-            types_label.pack(side="right", padx=10)
+            
+            # FIX: Added extra padding on the right (padx=(0, 15)) so it doesn't touch the scrollbar
+            ttk.Label(entry_frame, text=types_text, font=("Arial", 10), anchor="e").pack(side="right", padx=(0, 15))
 
-        # Force update the scroll region
+        # Force update layout
         self.scrollable_frame.update_idletasks()
-        self.scrollable_frame.event_generate('<Configure>')
+
 
 # === START APP ===
 if __name__ == "__main__":
